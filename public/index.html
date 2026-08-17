@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>老皮小店 LAOPI SHOP | 遊戲帳號買賣・誠信首選</title>
+  <style>
+    :root {
+      --bg-dark: #0d0d0d;
+      --card-bg: #161616;
+      --gold-primary: #d4af37;
+      --gold-light: #f9e076;
+      --gold-gradient: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
+      --text-color: #e0e0e0;
+      --border-color: #332a15;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth; /* 點擊按鈕時平滑捲動 */
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-color);
+      padding-bottom: 50px;
+    }
+
+    header {
+      background: #000000;
+      border-bottom: 2px solid var(--gold-primary);
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
+    }
+
+    .logo-container img {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 3px solid var(--gold-primary);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    }
+
+    .site-title {
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 28px;
+      font-weight: bold;
+      margin-top: 10px;
+      letter-spacing: 2px;
+    }
+
+    .site-sub {
+      color: #888;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .quick-menu {
+      max-width: 1000px;
+      margin: 25px auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 15px;
+      padding: 0 15px;
+      position: sticky;
+      top: 10px;
+      z-index: 100;
+    }
+
+    .menu-item {
+      background: rgba(22, 22, 22, 0.95);
+      backdrop-filter: blur(5px);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      color: var(--gold-light);
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .menu-item:hover {
+      border-color: var(--gold-primary);
+      transform: translateY(-3px);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+
+    .menu-item span {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 3px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      color: var(--gold-primary);
+      border-left: 4px solid var(--gold-primary);
+      padding-left: 10px;
+      margin: 40px 0 20px 0;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .product-card:hover {
+      border-color: var(--gold-primary);
+      box-shadow: 0 5px 20px rgba(212, 175, 55, 0.2);
+    }
+
+    .product-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: #222;
+    }
+
+    .product-info {
+      padding: 15px;
+    }
+
+    .product-title {
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .product-desc {
+      color: #aaa;
+      font-size: 13px;
+      height: 38px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    .product-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .product-price {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--gold-light);
+    }
+
+    .buy-btn {
+      background: var(--gold-gradient);
+      color: #000;
+      border: none;
+      padding: 8px 16px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* ===== 黑金質感內容卡片 ===== */
+    .info-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    .info-card h3 {
+      color: var(--gold-primary);
+      font-size: 20px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .step-item {
+      background: #222;
+      border: 1px solid #333;
+      padding: 12px 18px;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 15px;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: bold;
+    }
+
+    .btn-line { background-color: #06C755; }
+    .btn-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    .btn-fb { background-color: #1877F2; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-container">
+      <img src="logo.jpg" alt="老皮小店" onerror="this.src='https://via.placeholder.com/110/000/d4af37?text=LAOPI'">
+    </div>
+    <div class="site-title">老皮小店 LAOPI SHOP</div>
+    <div class="site-sub">👑 用心服務・誠信交易・安心首選 👑</div>
+  </header>
+
+  <!-- 頂部捷徑選單：點擊自動滑動到頁面內對應的區塊 -->
+  <div class="quick-menu">
+    <div class="menu-item" onclick="scrollToSection('#products')"><span>🔍</span>查詢帳號</div>
+    <div class="menu-item" onclick="scrollToSection('#process')"><span>🛒</span>購買流程</div>
+    <div class="menu-item" onclick="scrollToSection('#payment')"><span>💳</span>付款方式</div>
+    <div class="menu-item" onclick="scrollToSection('#service')"><span>🛡️</span>售後服務</div>
+    <div class="menu-item" onclick="window.open('https://www.instagram.com/laopi_ff_shop?igsh=am45cXl3eWFweXNy&igsi=am45cXl3eWFweXNy&utm_source=qr', '_blank')"><span>📷</span>IG 賣場</div>
+    <div class="menu-item" onclick="scrollToSection('#contact')"><span>👑</span>聯絡客服</div>
+  </div>
+
+  <div class="container">
+    
+    <!-- 1. 查詢帳號 / 熱門展售區 -->
+    <div id="products">
+      <div class="section-title">🔥 熱門精品帳號展售</div>
+      <div class="product-grid" id="productGrid">
+        <!-- 後台動態載入的商品會顯示在這裡 -->
+      </div>
+    </div>
+
+    <!-- 2. 購買流程區塊 -->
+    <div id="process">
+      <div class="section-title">🛒 購買流程</div>
+      <div class="info-card">
+        <h3>🛒 老皮小店｜購買流程</h3>
+        <div class="step-list">
+          <div class="step-item">① 挑選帳號（於網站或 IG 挑選心儀商品）</div>
+          <div class="step-item">② 確認價格（私訊客服確認價格與細節）</div>
+          <div class="step-item">③ 完成付款（提供多種安全付款管道）</div>
+          <div class="step-item">④ 交付帳號（專人協助改綁與資料確認）</div>
+          <div class="step-item">⑤ 交易完成 ✨（開始盡情享受遊戲樂趣！）</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 付款方式區塊 -->
+    <div id="payment">
+      <div class="section-title">💳 付款方式</div>
+      <div class="info-card">
+        <h3>💳 老皮小店｜多元付款方式</h3>
+        <div class="step-list">
+          <div class="step-item">① 網銀轉帳（快速即時對帳）</div>
+          <div class="step-item">② 無卡存款（無信用卡 / 帳戶也能輕鬆存）</div>
+          <div class="step-item">③ 超商代碼繳費（7-11 / 全家隨時可繳）</div>
+          <div class="step-item">④ 8591 交易（保障買賣雙方權益）</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. 售後服務區塊 -->
+    <div id="service">
+      <div class="section-title">🛡️ 售後服務</div>
+      <div class="info-card">
+        <h3>🛡️ 老皮小店｜安心保障承諾</h3>
+        <div class="step-list">
+          <div class="step-item">① 15天售後保障（交易完成起 15 天保固期）</div>
+          <div class="step-item">② 帳號問題協助（遭遇疑難雜症全程協助處理）</div>
+          <div class="step-item">③ 專人客服處理（一對一即時服務改綁與解答）</div>
+          <div class="step-item">④ 交易紀錄保留（透明公開，購賣更放心）</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. 聯絡客服區塊 -->
+    <div id="contact">
+      <div class="section-title">💬 聯絡客服</div>
+      <div class="info-card" style="text-align: center;">
+        <h3>👑 老皮小店｜專人客服中心</h3>
+        <p style="color: var(--gold-light); font-size: 16px; margin: 15px 0;">🕒 客服營業時間｜10:00 ～ 24:00</p>
+        <p style="color: #aaa; font-size: 14px; margin-bottom: 20px;">✨ 點擊下方按鈕私訊，我們將盡快為您服務！</p>
+        
+        <div class="social-links">
+          <a href="https://line.me/R/ti/p/@739njwrp" target="_blank" class="social-btn btn-line">💬 官方 LINE: @739njwrp</a>
+          <a href="https://www.instagram.com/laopi_ff_shop?igsh=am45cXl3eWFweXNy&igsi=am45cXl3eWFweXNy&utm_source=qr" target="_blank" class="social-btn btn-ig">📷 Instagram: laopi_ff_shop</a>
+          <a href="https://facebook.com" target="_blank" class="social-btn btn-fb">👍 FB: 老皮</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // 平滑捲動函數
+    function scrollToSection(selector) {
+      const element = document.querySelector(selector);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // 動態撈取商品
+    async function fetchProducts() {
+      try {
+        const response = await fetch('/api/products');
+        const products = await response.json();
+        
+        const grid = document.getElementById('productGrid');
+        grid.innerHTML = '';
+        
+        if (products && products.length > 0) {
+          products.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            
+            const defaultImg = 'https://via.placeholder.com/300x180/1a1a1a/d4af37?text=LAOPI+SHOP';
+            const imgUrl = p.imageUrl && p.imageUrl.trim() !== '' ? p.imageUrl : defaultImg;
+
+            card.innerHTML = `
+              <img src="${imgUrl}" class="product-img" onerror="this.src='${defaultImg}'">
+              <div class="product-info">
+                <div class="product-title">${p.name}</div>
+                <div class="product-desc">${p.description || '專業嚴選帳號，安全有保障'}</div>
+                <div class="product-bottom">
+                  <div class="product-price">NT$ ${p.price}</div>
+                  <button class="buy-btn" onclick="window.open('https://line.me/R/ti/p/@739njwrp', '_blank')">立即私訊</button>
+                </div>
+              </div>
+            `;
+            grid.appendChild(card);
+          });
+        } else {
+          grid.innerHTML = '<p style="color:#888; text-align:center; grid-column: 1/-1;">目前尚無架上商品，請至後台新增！</p>';
+        }
+      } catch (err) {
+        console.log("資料讀取失敗");
+      }
+    }
+
+    fetchProducts();
+  </script>
+</body>
+</html>
