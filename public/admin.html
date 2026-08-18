@@ -5,75 +5,80 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>商品管理後台</title>
   <style>
-    body { font-family: sans-serif; background: #f8f9fa; padding: 15px; margin: 0; }
-    .card { background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-    input, textarea { width: 100%; padding: 8px; margin-bottom: 10px; box-sizing: border-box; }
-    button { padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; }
-    .btn-add { background: #28a745; color: white; width: 100%; font-weight: bold; }
-    .btn-toggle { background: #ffc107; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f2f5; padding: 15px; margin: 0; }
+    .header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 15px; }
+    .card { background: white; padding: 20px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    h2, h3 { margin: 0 0 15px 0; color: #333; }
+    input, textarea { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+    textarea { height: 100px; resize: vertical; }
+    
+    .btn-group { display: flex; gap: 10px; }
+    button { padding: 10px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 14px; }
+    .btn-submit { background: #28a745; color: white; width: 100%; }
+    .btn-cancel { background: #6c757d; color: white; display: none; }
+    .btn-toggle { background: #ffc107; color: #212529; }
     .btn-edit { background: #17a2b8; color: white; }
     .btn-del { background: #dc3545; color: white; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    .btn-logout { background: #6c757d; color: white; }
 
-    /* 編輯彈窗 Modal */
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
-    .modal-content { background: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 500px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #e9ecef; padding: 12px; text-align: left; }
+    th { background: #f8f9fa; }
+    .action-btns { display: flex; gap: 5px; flex-wrap: wrap; }
   </style>
 </head>
 <body>
-  <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+
+  <div class="header">
     <h2>🛠️ 商品管理後台</h2>
-    <button onclick="logout()">登出</button>
+    <button class="btn-logout" onclick="logout()">登出</button>
   </div>
 
-  <!-- 新增商品表單 -->
-  <div class="card">
-    <h3>新增商品</h3>
-    <form id="addForm">
+  <!-- 新增/編輯商品表單區塊 -->
+  <div class="card" id="formCard">
+    <h3 id="formTitle">新增商品</h3>
+    <form id="productForm">
+      <input type="hidden" id="editProductId" value="">
+      
       <input type="text" id="name" placeholder="商品名稱" required>
       <input type="number" id="price" placeholder="價格" required>
-      <input type="text" id="category" placeholder="分類（例如：軟體/教學）">
+      <input type="text" id="category" placeholder="分類（例如：Free Fire / 軟體）">
       
-      <label style="display:block; margin-top: 10px; font-weight: bold;">商品圖片（可多選）：</label>
+      <label style="display:block; margin-bottom: 6px; font-weight: bold; color: #444;">商品圖片（可多選）：</label>
       <input type="file" id="imageFileInput" accept="image/*" multiple style="margin-bottom: 8px;">
-      <input type="text" id="imageUrl" placeholder="圖片網址（上傳後會自動帶入）" readonly required>
+      <input type="text" id="imageUrl" placeholder="圖片網址（上傳後會自動帶入，逗號分隔）" required>
       <div id="uploadStatus" style="color: #d97706; font-size: 13px; margin-bottom: 10px;"></div>
 
-      <textarea id="description" placeholder="商品介紹"></textarea>
-      <button type="submit" class="btn-add">➕ 新增商品</button>
+      <textarea id="description" placeholder="商品介紹（如：帳號綁定方式、詳細賣點）"></textarea>
+      
+      <div class="btn-group">
+        <button type="submit" id="submitBtn" class="btn-submit">➕ 新增商品</button>
+        <button type="button" id="cancelBtn" class="btn-cancel" onclick="resetForm()">取消編輯</button>
+      </div>
     </form>
   </div>
 
   <!-- 商品列表 -->
   <div class="card">
     <h3>商品列表</h3>
-    <table>
-      <thead>
-        <tr><th>名稱</th><th>價格</th><th>狀態</th><th>操作</th></tr>
-      </thead>
-      <tbody id="list"></tbody>
-    </table>
-  </div>
-
-  <!-- 編輯 Modal 彈窗 -->
-  <div id="editModal" class="modal">
-    <div class="modal-content">
-      <h3>✏️ 編輯商品</h3>
-      <input type="hidden" id="editId">
-      <input type="text" id="editName" placeholder="商品名稱" required>
-      <input type="number" id="editPrice" placeholder="價格" required>
-      <input type="text" id="editCategory" placeholder="分類">
-      <input type="text" id="editImageUrl" placeholder="圖片網址">
-      <textarea id="editDescription" placeholder="商品介紹"></textarea>
-      <div style="display:flex; gap: 10px; margin-top: 10px;">
-        <button class="btn-add" onclick="saveEdit()">儲存修改</button>
-        <button style="background:#6c757d; color:white;" onclick="closeModal()">取消</button>
-      </div>
+    <div style="overflow-x: auto;">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 35%;">名稱</th>
+            <th style="width: 20%;">價格</th>
+            <th style="width: 15%;">狀態</th>
+            <th style="width: 30%;">操作</th>
+          </tr>
+        </thead>
+        <tbody id="list"></tbody>
+      </table>
     </div>
   </div>
 
   <script>
+    let allProducts = [];
+
     async function check() {
       const res = await fetch('/api/admin/check-auth');
       const data = await res.json();
@@ -83,89 +88,109 @@
 
     async function load() {
       const res = await fetch('/api/products');
-      const products = await res.json();
-      document.getElementById('list').innerHTML = products.map(p => `
+      allProducts = await res.json();
+      renderList();
+    }
+
+    function renderList() {
+      document.getElementById('list').innerHTML = allProducts.map(p => `
         <tr>
-          <td><b>${p.name}</b></td>
+          <td><b>${escapeHtml(p.name)}</b></td>
           <td>$${p.price}</td>
-          <td>${p.isActive ? '上架' : '下架'}</td>
+          <td><span style="color:${p.isActive ? '#28a745' : '#dc3545'}; font-weight:bold;">${p.isActive ? '上架' : '下架'}</span></td>
           <td>
-            <button class="btn-toggle" onclick="toggle(${p.id})">${p.isActive ? '下架' : '上架'}</button>
-            <button class="btn-edit" onclick="openEdit(${p.id}, '${p.name}', ${p.price}, '${p.category}', '${p.imageUrl}', '${p.description}')">編輯</button>
-            <button class="btn-del" onclick="del(${p.id})">刪除</button>
+            <div class="action-btns">
+              <button class="btn-toggle" onclick="toggle(${p.id})">${p.isActive ? '下架' : '上架'}</button>
+              <button class="btn-edit" onclick="startEdit(${p.id})">編輯</button>
+              <button class="btn-del" onclick="del(${p.id})">刪除</button>
+            </div>
           </td>
         </tr>
       `).join('');
     }
 
-    // 新增商品
-    document.getElementById('addForm').onsubmit = async (e) => {
-      e.preventDefault();
-      await fetch('/api/products', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: document.getElementById('name').value,
-          price: document.getElementById('price').value,
-          category: document.getElementById('category').value,
-          imageUrl: document.getElementById('imageUrl').value,
-          description: document.getElementById('description').value
-        })
-      });
-      document.getElementById('addForm').reset();
+    // 點擊「編輯」按鈕：填回頂部表單
+    function startEdit(id) {
+      const p = allProducts.find(item => item.id === id);
+      if (!p) return;
+
+      document.getElementById('editProductId').value = p.id;
+      document.getElementById('name').value = p.name;
+      document.getElementById('price').value = p.price;
+      document.getElementById('category').value = p.category || '';
+      document.getElementById('imageUrl').value = p.imageUrl || '';
+      document.getElementById('description').value = p.description || '';
+
+      document.getElementById('formTitle').innerText = '✏️ 修改商品';
+      document.getElementById('submitBtn').innerText = '💾 儲存修改';
+      document.getElementById('submitBtn').style.background = '#0d6efd';
+      document.getElementById('cancelBtn').style.display = 'block';
+
+      // 平滑捲動至頂部表單
+      document.getElementById('formCard').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 重置表單為新增狀態
+    function resetForm() {
+      document.getElementById('editProductId').value = '';
+      document.getElementById('productForm').reset();
       document.getElementById('uploadStatus').innerText = '';
+      
+      document.getElementById('formTitle').innerText = '新增商品';
+      document.getElementById('submitBtn').innerText = '➕ 新增商品';
+      document.getElementById('submitBtn').style.background = '#28a745';
+      document.getElementById('cancelBtn').style.display = 'none';
+    }
+
+    // 表單送出 (判斷是新增還是編輯)
+    document.getElementById('productForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const editId = document.getElementById('editProductId').value;
+      const payload = {
+        name: document.getElementById('name').value,
+        price: document.getElementById('price').value,
+        category: document.getElementById('category').value,
+        imageUrl: document.getElementById('imageUrl').value,
+        description: document.getElementById('description').value
+      };
+
+      if (editId) {
+        // PUT 修改
+        await fetch(`/api/products/${editId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } else {
+        // POST 新增
+        await fetch('/api/products', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      }
+
+      resetForm();
       load();
     };
 
-    // 編輯商品視窗與儲存
-    function openEdit(id, name, price, category, imageUrl, description) {
-      document.getElementById('editId').value = id;
-      document.getElementById('editName').value = name;
-      document.getElementById('editPrice').value = price;
-      document.getElementById('editCategory').value = category;
-      document.getElementById('editImageUrl').value = imageUrl;
-      document.getElementById('editDescription').value = description;
-      document.getElementById('editModal').style.display = 'flex';
-    }
-
-    function closeModal() {
-      document.getElementById('editModal').style.display = 'none';
-    }
-
-    async function saveEdit() {
-      const id = document.getElementById('editId').value;
-      await fetch(`/api/products/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: document.getElementById('editName').value,
-          price: document.getElementById('editPrice').value,
-          category: document.getElementById('editCategory').value,
-          imageUrl: document.getElementById('editImageUrl').value,
-          description: document.getElementById('editDescription').value
-        })
-      });
-      closeModal();
+    // 切換上下架
+    async function toggle(id) {
+      await fetch(`/api/products/${id}/toggle`, { method: 'PATCH' });
       load();
     }
 
-    // 上架 / 下架
-    async function toggle(id) { 
-      await fetch(`/api/products/${id}/toggle`, { method: 'PATCH' }); 
-      load(); 
-    }
-
     // 刪除商品
-    async function del(id) { 
-      if (confirm('確定要刪除這項商品嗎？')) { 
-        await fetch(`/api/products/${id}`, { method: 'DELETE' }); 
-        load(); 
-      } 
+    async function del(id) {
+      if (confirm('確定要刪除這項商品嗎？')) {
+        await fetch(`/api/products/${id}`, { method: 'DELETE' });
+        load();
+      }
     }
 
-    async function logout() { 
-      await fetch('/api/admin/logout', { method: 'POST' }); 
-      window.location.href = '/admin-login.html'; 
+    async function logout() {
+      await fetch('/api/admin/logout', { method: 'POST' });
+      window.location.href = '/admin-login.html';
     }
 
     // 多圖自動上傳 ImgBB
@@ -199,12 +224,18 @@
       }
 
       if (uploadedUrls.length > 0) {
-        imageUrlInput.value = uploadedUrls.join(',');
+        const currentUrls = imageUrlInput.value ? imageUrlInput.value.split(',') : [];
+        const finalUrls = [...currentUrls, ...uploadedUrls].filter(Boolean);
+        imageUrlInput.value = finalUrls.join(',');
         status.innerText = `✅ 成功上傳 ${uploadedUrls.length} 張圖片！`;
       } else {
         status.innerText = '❌ 上傳失敗，請重試';
       }
     });
+
+    function escapeHtml(str) {
+      return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
 
     check();
   </script>

@@ -9,11 +9,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// 記憶體商品資料庫（初始化為空）
+// 記憶體商品資料庫
 let products = [];
-let isAuth = true; // 管理員驗證狀態
+let isAuth = true;
 
-// 1. 管理員驗證與登入
+// 1. 管理員驗證與登入 API
 app.get('/api/admin/check-auth', (req, res) => {
   res.json({ authenticated: isAuth });
 });
@@ -32,7 +32,7 @@ app.post('/api/admin/logout', (req, res) => {
   res.json({ success: true });
 });
 
-// 2. 取得所有商品 (前後端通用)
+// 2. 取得所有商品
 app.get('/api/products', (req, res) => {
   res.json(products);
 });
@@ -53,7 +53,7 @@ app.post('/api/products', (req, res) => {
   res.json({ success: true, product: newProduct });
 });
 
-// 4. 編輯商品
+// 4. 修改/編輯商品
 app.put('/api/products/:id', (req, res) => {
   const id = Number(req.params.id);
   const { name, price, category, imageUrl, description } = req.body;
@@ -61,18 +61,18 @@ app.put('/api/products/:id', (req, res) => {
   if (index !== -1) {
     products[index] = {
       ...products[index],
-      name: name || products[index].name,
-      price: Number(price) || products[index].price,
-      category: category || products[index].category,
-      imageUrl: imageUrl || products[index].imageUrl,
-      description: description || products[index].description
+      name: name !== undefined ? name : products[index].name,
+      price: price !== undefined ? Number(price) : products[index].price,
+      category: category !== undefined ? category : products[index].category,
+      imageUrl: imageUrl !== undefined ? imageUrl : products[index].imageUrl,
+      description: description !== undefined ? description : products[index].description
     };
     return res.json({ success: true, product: products[index] });
   }
   res.status(404).json({ success: false, message: '找不到商品' });
 });
 
-// 5. 上下架商品
+// 5. 切換上下架
 app.patch('/api/products/:id/toggle', (req, res) => {
   const id = Number(req.params.id);
   const product = products.find(p => p.id === id);
