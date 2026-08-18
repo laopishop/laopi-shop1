@@ -5,71 +5,123 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>老皮小店 LAOPI SHOP</title>
   <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body { background-color: #0d0d0d; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 15px; }
-    .header { text-align: center; padding: 20px 0; border-bottom: 2px solid #d4af37; margin-bottom: 20px; }
-    .header h1 { color: #d4af37; margin: 0; font-size: 24px; letter-spacing: 1px; }
-    .header p { color: #aaa; font-size: 13px; margin-top: 5px; }
 
+    /* 頂部 Header & LOGO */
+    .header { text-align: center; padding: 15px 0 20px 0; border-bottom: 2px solid #d4af37; margin-bottom: 20px; }
+    .logo-img { width: 100px; height: 100px; border-radius: 50%; border: 2px solid #d4af37; margin-bottom: 10px; object-fit: cover; }
+    .header h1 { color: #d4af37; margin: 0; font-size: 22px; font-weight: bold; letter-spacing: 1px; }
+    .header p { color: #aaa; font-size: 13px; margin-top: 6px; }
+
+    /* 捷徑選單 */
     .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px; }
-    .nav-btn { background: #1a1a1a; border: 1px solid #333; padding: 15px; border-radius: 8px; text-align: center; color: #fff; text-decoration: none; font-size: 14px; font-weight: bold; }
+    .nav-btn { background: #1a1a1a; border: 1px solid #333; padding: 14px; border-radius: 10px; text-align: center; color: #fff; text-decoration: none; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .nav-btn:active { background: #2a2a2a; }
 
-    .section-title { font-size: 18px; color: #ffc107; margin-bottom: 15px; border-left: 4px solid #ffc107; padding-left: 8px; }
+    /* 區塊標題 */
+    .section-title { font-size: 18px; color: #ffc107; margin: 25px 0 15px 0; border-left: 4px solid #ffc107; padding-left: 10px; font-weight: bold; }
 
-    /* 商品列表 */
+    /* 動態商品展售卡片 */
     .product-grid { display: flex; flex-direction: column; gap: 15px; }
     .product-card { background: #141414; border: 1px solid #2a2a2a; border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.2s; }
     .product-card:active { transform: scale(0.98); }
-    .product-img { width: 100%; height: 200px; object-fit: cover; background: #222; }
+    .product-img { width: 100%; height: 210px; object-fit: cover; background: #222; display: block; }
     .product-info { padding: 15px; }
-    .product-title { font-size: 16px; font-weight: bold; margin-bottom: 8px; color: #fff; }
-    .product-desc-preview { font-size: 12px; color: #aaa; margin-bottom: 12px; white-space: pre-wrap; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .product-bottom { display: flex; justify-content: space-between; align-items: center; }
-    .product-price { font-size: 18px; font-weight: bold; color: #ffd700; }
-    .btn-action { background: linear-gradient(135deg, #ffe066, #f39c12); color: #000; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 13px; }
+    .product-title { font-size: 17px; font-weight: bold; margin-bottom: 8px; color: #fff; }
+    .product-desc-preview { font-size: 13px; color: #aaa; margin-bottom: 12px; white-space: pre-wrap; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5; }
+    .product-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+    .product-price { font-size: 19px; font-weight: bold; color: #ffd700; }
+    .btn-action { background: linear-gradient(135deg, #ffe066, #f39c12); color: #000; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 13px; cursor: pointer; }
 
-    /* 詳細資訊彈窗 Modal */
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; padding: 15px; box-sizing: border-box; }
-    .modal-content { background: #1a1a1a; width: 100%; max-width: 500px; max-height: 90vh; border-radius: 12px; border: 1px solid #d4af37; overflow-y: auto; padding: 15px; position: relative; box-sizing: border-box; }
-    .close-btn { position: absolute; top: 10px; right: 15px; font-size: 24px; color: #fff; cursor: pointer; z-index: 10; }
+    /* 各功能介紹卡片 */
+    .info-card { background: #141414; border: 1px solid #2a2a2a; border-radius: 12px; padding: 18px; margin-bottom: 15px; line-height: 1.6; font-size: 14px; color: #ddd; }
+    .info-card h3 { color: #ffd700; margin-top: 0; margin-bottom: 10px; font-size: 16px; }
+    .info-card ol, .info-card ul { padding-left: 20px; margin: 0; }
+    .info-card li { margin-bottom: 6px; }
 
-    /* 輪播圖 Gallery */
-    .carousel { position: relative; width: 100%; height: 250px; background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 12px; }
+    /* 多圖詳情彈窗 Modal */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); z-index: 1000; justify-content: center; align-items: center; padding: 15px; }
+    .modal-content { background: #181818; width: 100%; max-width: 480px; max-height: 90vh; border-radius: 14px; border: 1px solid #d4af37; overflow-y: auto; padding: 16px; position: relative; }
+    .close-btn { position: absolute; top: 8px; right: 14px; font-size: 26px; color: #fff; cursor: pointer; z-index: 10; font-weight: bold; }
+
+    /* 圖片輪播 */
+    .carousel { position: relative; width: 100%; height: 260px; background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 12px; }
     .carousel img { width: 100%; height: 100%; object-fit: contain; }
-    .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: #fff; border: none; font-size: 18px; padding: 10px; cursor: pointer; border-radius: 4px; }
+    .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.65); color: #fff; border: none; font-size: 20px; padding: 10px 14px; cursor: pointer; border-radius: 4px; }
     .carousel-btn.prev { left: 5px; }
     .carousel-btn.next { right: 5px; }
-    .dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 12px; }
+    .dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 15px; }
     .dot { width: 8px; height: 8px; background: #555; border-radius: 50%; cursor: pointer; }
     .dot.active { background: #ffd700; width: 18px; border-radius: 4px; }
 
-    .modal-title { font-size: 18px; color: #fff; margin-bottom: 8px; font-weight: bold; }
-    .modal-price { font-size: 20px; color: #ffd700; font-weight: bold; margin-bottom: 12px; }
-    .modal-desc { background: #222; padding: 12px; border-radius: 6px; font-size: 13px; color: #ddd; line-height: 1.6; white-space: pre-wrap; margin-bottom: 15px; }
-    .modal-contact-btn { display: block; width: 100%; text-align: center; background: linear-gradient(135deg, #ffe066, #f39c12); color: #000; text-decoration: none; padding: 12px 0; border-radius: 25px; font-weight: bold; font-size: 15px; }
+    .modal-title { font-size: 18px; color: #fff; margin-bottom: 6px; font-weight: bold; }
+    .modal-price { font-size: 22px; color: #ffd700; font-weight: bold; margin-bottom: 12px; }
+    .modal-desc { background: #222; padding: 14px; border-radius: 8px; font-size: 13px; color: #e0e0e0; line-height: 1.6; white-space: pre-wrap; margin-bottom: 15px; }
+    .modal-contact-btn { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; text-align: center; background: linear-gradient(135deg, #ffe066, #f39c12); color: #000; text-decoration: none; padding: 12px 0; border-radius: 25px; font-weight: bold; font-size: 15px; }
   </style>
 </head>
 <body>
 
+  <!-- 頂部 Header -->
   <div class="header">
+    <img class="logo-img" src="https://i.ibb.co/yB7hjqGL/IMG-0555.jpg" alt="LAOPI SHOP Logo" onerror="this.style.display='none'">
     <h1>👑 老皮小店 LAOPI SHOP</h1>
     <p>👑 用心服務・誠信交易・安心首選 👑</p>
   </div>
 
+  <!-- 捷徑選單（自動滑動到相對應位置） -->
   <div class="nav-grid">
-    <div class="nav-btn">🔍 查詢帳號</div>
-    <div class="nav-btn">🛒 購買流程</div>
-    <div class="nav-btn">💳 付款方式</div>
-    <div class="nav-btn">🛡️ 售後服務</div>
-    <div class="nav-btn">📷 IG 賣場</div>
-    <div class="nav-btn">👑 聯絡客服</div>
+    <a href="#sec-products" class="nav-btn">🔍 查詢帳號</a>
+    <a href="#sec-process" class="nav-btn">🛒 購買流程</a>
+    <a href="#sec-payment" class="nav-btn">💳 付款方式</a>
+    <a href="#sec-service" class="nav-btn">🛡️ 售後服務</a>
+    <a href="https://line.me/R/ti/p/@739njwrp" target="_blank" class="nav-btn">📷 IG 賣場</a>
+    <a href="https://line.me/R/ti/p/@739njwrp" target="_blank" class="nav-btn">👑 聯絡客服</a>
   </div>
 
-  <div class="section-title">🔥 熱門精品帳號展售</div>
+  <!-- 1. 動態帳號展售區 -->
+  <div class="section-title" id="sec-products">🔥 熱門精品帳號展售</div>
   <div class="product-grid" id="productGrid">
     <div style="text-align: center; color: #888; padding: 30px;">正在載入商品中...</div>
   </div>
 
-  <!-- 詳情彈窗 Modal -->
+  <!-- 2. 購買流程區塊 -->
+  <div class="section-title" id="sec-process">🛒 購買流程</div>
+  <div class="info-card">
+    <h3>輕鬆 4 步完成購買：</h3>
+    <ol>
+      <li><b>選擇商品</b>：瀏覽上方展售卡片，點擊查看詳細照片與介紹。</li>
+      <li><b>私訊客服</b>：點擊「💬 立即私訊諮詢 / 購買」發送商品編號給官方 LINE。</li>
+      <li><b>確認付款</b>：選擇您方便的付款方式（無卡存款 / 轉帳 / 超商）。</li>
+      <li><b>安全交屋</b>：款項確認後，客服將立即提供完整帳號密碼並協助綁定！</li>
+    </ol>
+  </div>
+
+  <!-- 3. 付款方式區塊 -->
+  <div class="section-title" id="sec-payment">💳 付款方式</div>
+  <div class="info-card">
+    <h3>支援多元付款方式：</h3>
+    <ul>
+      <li><b>網路銀行轉帳 / ATM 匯款</b></li>
+      <li><b>無卡存款（各大銀行 / 郵局）</b></li>
+      <li><b>超商代碼繳費（7-11 / 全家 / 萊爾富 / OK）</b></li>
+    </ul>
+  </div>
+
+  <!-- 4. 售後服務區塊 -->
+  <div class="section-title" id="sec-service">🛡️ 售後服務</div>
+  <div class="info-card">
+    <h3>售後保障條款：</h3>
+    <ul>
+      <li>本店販售之帳號均經過嚴格來源審查，確保無回收風險。</li>
+      <li>交易完成後提供完整售後追蹤與綁定指導教學。</li>
+      <li>如有任何問題，官方 LINE 小編均會秒回為您服務！</li>
+    </ul>
+  </div>
+
+  <!-- 商品詳情彈窗 Modal -->
   <div id="productModal" class="modal" onclick="closeModalOnBg(event)">
     <div class="modal-content">
       <span class="close-btn" onclick="closeModal()">&times;</span>
@@ -85,7 +137,9 @@
       <div class="modal-title" id="modalTitle"></div>
       <div class="modal-price" id="modalPrice"></div>
       <div class="modal-desc" id="modalDesc"></div>
-      <a id="modalContactBtn" href="https://line.me" target="_blank" class="modal-contact-btn">💬 立即私訊諮詢 / 購買</a>
+      
+      <!-- 直連官方 LINE 的深度連結按鈕 -->
+      <a href="https://line.me/R/ti/p/@739njwrp" target="_blank" class="modal-contact-btn">💬 立即私訊諮詢 / 購買</a>
     </div>
   </div>
 
@@ -153,7 +207,6 @@
     function updateCarousel() {
       document.getElementById('carouselImg').src = currentImages[currentImageIndex];
       
-      // 顯示/隱藏 切換按鈕
       const prevBtn = document.querySelector('.carousel-btn.prev');
       const nextBtn = document.querySelector('.carousel-btn.next');
       if (currentImages.length <= 1) {
@@ -164,7 +217,6 @@
         nextBtn.style.display = 'block';
       }
 
-      // 產生點點指示器
       const dotsBox = document.getElementById('dotsBox');
       dotsBox.innerHTML = currentImages.map((_, idx) => `
         <div class="dot ${idx === currentImageIndex ? 'active' : ''}" onclick="setImageIndex(${idx})"></div>
