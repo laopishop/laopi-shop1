@@ -28,7 +28,10 @@
       <input type="text" id="name" placeholder="商品名稱" required>
       <input type="number" id="price" placeholder="價格" required>
       <input type="text" id="category" placeholder="分類 (例如：軟體/教學)">
-      <input type="url" id="imageUrl" placeholder="圖片網址 (https://...)">
+      <label>商品圖片：</label>
+<input type="file" id="imageFileInput" accept="image/*" style="margin-bottom: 8px;">
+<input type="text" id="imageUrl" placeholder="圖片網址（上傳後會自動帶入）" readonly>
+<div id="uploadStatus" style="color: #ffd700; font-size: 13px; margin-bottom: 10px;"></div>
       <textarea id="description" placeholder="商品介紹"></textarea>
       <button type="submit" class="btn-add">➕ 新增商品</button>
     </form>
@@ -90,6 +93,36 @@
     async function logout() { await fetch('/api/admin/logout', { method: 'POST' }); window.location.href = '/admin-login.html'; }
 
     check();
+// 自動上傳照片至 ImgBB
+const IMGBB_API_KEY = 'bd19a15edb9e5688cab8347560641b8e';
+
+document.getElementById('imageFileInput').addEventListener('change', async function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const status = document.getElementById('uploadStatus');
+  status.innerText = '⏳ 圖片上傳中，請稍候...';
+
+  const formData = new FormData();
+  formData.append('image', file);
+
+  try {
+    const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      document.getElementById('imageUrl').value = data.data.url;
+      status.innerText = '✅ 圖片上傳成功！';
+    } else {
+      status.innerText = '❌ 上傳失敗，請重試';
+    }
+  } catch (err) {
+    status.innerText = '❌ 發生錯誤，請檢查網路';
+  }
+});
   </script>
 </body>
 </html>
