@@ -10,15 +10,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 記憶體中暫存的商品列表
-let products = [
-  {
-    id: 1,
-    name: "老皮精選｜熱門帳號範例",
-    price: 1000,
-    description: "熱門限定角、滿命滿精，極速改綁交付！",
-    imageUrl: ""
-  }
-];
+let products = [];
 
 // 👑 最新管理員帳號與密碼
 const ADMIN_USER = "laopi_shopp";
