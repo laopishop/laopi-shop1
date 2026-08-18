@@ -50,11 +50,12 @@
   </div>
 
   <script>
-    async function check() {
-      const res = await fetch('/api/admin/check');
-      if (!res.ok) window.location.href = '/admin-login.html';
-      else load();
-    }
+async function check() {
+  const res = await fetch('/api/admin/check-auth');
+  const data = await res.json();
+  if (!data.authenticated) window.location.href = '/admin-login.html';
+  else load();
+}
 
     async function load() {
       const res = await fetch('/api/admin/products');
