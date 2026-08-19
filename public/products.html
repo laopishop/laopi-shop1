@@ -29,8 +29,31 @@
     .product-title { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 38px; line-height: 1.3; }
     .product-price { font-size: 16px; color: #ffd700; font-weight: bold; }
 
+    /* 獨立放在最外層的右上角懸浮關閉叉叉 */
+    .fixed-close-btn { 
+      position: fixed !important; 
+      top: calc(20px + env(safe-area-inset-top, 0px)) !important; 
+      right: 20px !important;
+      font-size: 24px; 
+      color: #fff; 
+      cursor: pointer; 
+      z-index: 9999 !important;
+      font-weight: bold; 
+      background: #000; 
+      width: 42px; 
+      height: 42px; 
+      border-radius: 50%; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      border: 2px solid #ffd700;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
     /* 商品詳情彈窗 Modal */
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 1000; justify-content: center; align-items: flex-end; padding: 12px; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.92); z-index: 1000; justify-content: center; align-items: flex-end; padding: 12px; }
     .modal-content { 
       background: #161616; 
       width: 100%; 
@@ -43,27 +66,6 @@
       position: relative; 
       -webkit-overflow-scrolling: touch; 
       margin-bottom: env(safe-area-inset-bottom, 10px);
-    }
-
-    /* 強制固定在螢幕右上角的懸浮叉叉（避開 iPhone 安全區與網址列） */
-    .close-btn { 
-      position: fixed; 
-      top: calc(15px + env(safe-area-inset-top)); 
-      right: 20px;
-      font-size: 26px; 
-      color: #fff; 
-      cursor: pointer; 
-      z-index: 2000; 
-      font-weight: bold; 
-      background: rgba(0, 0, 0, 0.85); 
-      width: 40px; 
-      height: 40px; 
-      border-radius: 50%; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center;
-      border: 1px solid #d4af37;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
 
     /* 輪播容器 */
@@ -88,27 +90,31 @@
 
     .modal-desc-box { background: #202020; padding: 14px; border-radius: 10px; font-size: 13px; color: #ddd; line-height: 1.6; white-space: pre-wrap; border: 1px solid #2a2a2a; }
     
-    /* Lightbox 全螢幕照片 */
-    .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.96); z-index: 3000; justify-content: center; align-items: center; overflow: hidden; }
-    .lightbox-img { max-width: 95vw; max-height: 85vh; object-fit: contain; transition: transform 0.15s ease-out; }
-    .lightbox-close { position: fixed; top: calc(20px + env(safe-area-inset-top)); right: 20px; color: #fff; font-size: 32px; font-weight: bold; cursor: pointer; z-index: 3010; background: rgba(0,0,0,0.6); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid #555; }
+    /* Lightbox 全螢幕照片檢視 */
+    .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.96); z-index: 10000; justify-content: center; align-items: center; overflow: hidden; }
+    .lightbox-img { max-width: 95vw; max-height: 68vh; object-fit: contain; transition: transform 0.15s ease-out; }
+    .lightbox-close { position: fixed; top: calc(20px + env(safe-area-inset-top)); right: 20px; color: #fff; font-size: 32px; font-weight: bold; cursor: pointer; z-index: 10010; background: rgba(0,0,0,0.6); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid #555; }
     
-    .lightbox-btn { position: fixed; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.65); color: #ffd700; border: 1px solid rgba(255,215,0,0.4); font-size: 26px; padding: 14px 16px; cursor: pointer; border-radius: 12px; z-index: 3010; user-select: none; }
+    .lightbox-btn { position: fixed; top: 46%; transform: translateY(-50%); background: rgba(0,0,0,0.65); color: #ffd700; border: 1px solid rgba(255,215,0,0.4); font-size: 26px; padding: 14px 16px; cursor: pointer; border-radius: 12px; z-index: 10010; user-select: none; }
     .lightbox-btn.prev { left: 15px; }
     .lightbox-btn.next { right: 15px; }
-    .lightbox-counter { position: fixed; bottom: calc(25px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); color: #ffd700; background: rgba(0,0,0,0.75); padding: 6px 16px; border-radius: 20px; font-size: 14px; font-weight: bold; border: 1px solid rgba(255,215,0,0.3); z-index: 3010; }
+    .lightbox-counter { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); color: #ffd700; background: rgba(0,0,0,0.75); padding: 6px 16px; border-radius: 20px; font-size: 14px; font-weight: bold; border: 1px solid rgba(255,215,0,0.3); z-index: 10010; }
 
-    /* 📱 針對手機版微調 */
+    /* 📱 針對手機版：高度抬升高過 1/3 頁碼，頂部與叉叉拉開距離 */
     @media (max-width: 768px) {
       .lightbox-img {
-        margin-top: -70px;
+        margin-top: -50px;
+        max-height: 62vh;
       }
       .lightbox-btn {
         top: 42%;
       }
+      .lightbox-counter {
+        bottom: 40px;
+      }
     }
 
-    .toast { display: none; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #ffd700; color: #000; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 14px; z-index: 4000; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+    .toast { display: none; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #ffd700; color: #000; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 14px; z-index: 11000; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
   </style>
 </head>
 <body>
@@ -125,11 +131,11 @@
     </div>
   </div>
 
+  <!-- 獨立放在最外層的右上角懸浮關閉叉叉 -->
+  <div id="globalCloseBtn" class="fixed-close-btn" style="display: none;" onclick="closeModal()">✕</div>
+
   <!-- 商品詳情彈窗 Modal -->
   <div id="productModal" class="modal" onclick="closeModalOnBg(event)">
-    <!-- 把關閉按鈕放到 modal 外層獨立定點，固定在螢幕右上角 -->
-    <span class="close-btn" onclick="closeModal()">&times;</span>
-    
     <div class="modal-content">
       <div class="carousel">
         <img id="carouselImg" src="" alt="帳號圖片" onclick="openLightbox()">
@@ -238,6 +244,7 @@
       document.getElementById('modalDesc').innerText = p.description || '暫無詳細資訊說明。';
 
       document.getElementById('productModal').style.display = 'flex';
+      document.getElementById('globalCloseBtn').style.display = 'flex';
       document.body.classList.add('modal-open');
     }
 
@@ -336,6 +343,7 @@
 
     function closeModal() {
       document.getElementById('productModal').style.display = 'none';
+      document.getElementById('globalCloseBtn').style.display = 'none';
       document.body.classList.remove('modal-open');
       if (history.pushState) {
         history.pushState(null, null, window.location.pathname);
