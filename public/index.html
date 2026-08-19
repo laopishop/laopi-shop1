@@ -60,7 +60,7 @@
     .modal-content { background: #161616; width: 100%; max-width: 480px; max-height: 92vh; border-radius: 16px; border: 1px solid #d4af37; overflow-y: auto; padding: 16px; position: relative; }
     .close-btn { position: absolute; top: 10px; right: 15px; font-size: 28px; color: #fff; cursor: pointer; z-index: 20; font-weight: bold; background: rgba(0,0,0,0.5); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
-    /* 輪播容器：徹底消除黑邊，圖片自動填滿 */
+    /* 輪播容器：自動填滿 */
     .carousel { position: relative; width: 100%; height: 340px; background: #000; border-radius: 10px; overflow: hidden; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; border: 1px solid #222; }
     .carousel img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer; }
     .zoom-tip { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.75); color: #ffd700; font-size: 11px; padding: 4px 8px; border-radius: 6px; pointer-events: none; border: 1px solid rgba(255,215,0,0.3); z-index: 5; }
@@ -82,10 +82,16 @@
 
     .modal-desc-box { background: #202020; padding: 14px; border-radius: 10px; font-size: 13px; color: #ddd; line-height: 1.6; white-space: pre-wrap; border: 1px solid #2a2a2a; }
     
-    /* 全螢幕照片檢視器 Lightbox (支援縮放與滑動) */
-    .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.96); z-index: 3000; justify-content: center; align-items: center; overflow: auto; }
-    .lightbox-img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    /* 全螢幕照片檢視器 Lightbox (支援連動切換與觸控滑動) */
+    .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.96); z-index: 3000; justify-content: center; align-items: center; overflow: hidden; }
+    .lightbox-img { max-width: 95vw; max-height: 85vh; object-fit: contain; transition: transform 0.15s ease-out; }
     .lightbox-close { position: fixed; top: 20px; right: 20px; color: #fff; font-size: 32px; font-weight: bold; cursor: pointer; z-index: 3010; background: rgba(0,0,0,0.6); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid #555; }
+    
+    /* 全螢幕放大時的左右切換按鈕與頁碼 */
+    .lightbox-btn { position: fixed; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.65); color: #ffd700; border: 1px solid rgba(255,215,0,0.4); font-size: 26px; padding: 14px 16px; cursor: pointer; border-radius: 12px; z-index: 3010; user-select: none; }
+    .lightbox-btn.prev { left: 15px; }
+    .lightbox-btn.next { right: 15px; }
+    .lightbox-counter { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); color: #ffd700; background: rgba(0,0,0,0.75); padding: 6px 16px; border-radius: 20px; font-size: 14px; font-weight: bold; border: 1px solid rgba(255,215,0,0.3); z-index: 3010; }
 
     .toast { display: none; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #ffd700; color: #000; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 14px; z-index: 4000; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
   </style>
@@ -222,10 +228,15 @@
     </div>
   </div>
 
-  <!-- 全螢幕照片檢視器 Lightbox -->
-  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+  <!-- 全螢幕照片檢視器 Lightbox (升級連動與觸控滑動) -->
+  <div id="lightbox" class="lightbox" onclick="closeLightboxOnBg(event)">
     <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    
+    <button class="lightbox-btn prev" id="lbPrevBtn" onclick="changeLightboxImage(-1, event)">&#10094;</button>
     <img id="lightboxImg" class="lightbox-img" src="" alt="放大照片">
+    <button class="lightbox-btn next" id="lbNextBtn" onclick="changeLightboxImage(1, event)">&#10095;</button>
+    
+    <div class="lightbox-counter" id="lbCounter">1 / 1</div>
   </div>
 
   <div id="toast" class="toast">已複製商品專屬連結！</div>
@@ -235,6 +246,10 @@
     let currentImages = [];
     let currentImageIndex = 0;
     let currentActiveProductId = null;
+
+    /* 觸控滑動切換變數 */
+    let touchStartX = 0;
+    let touchEndX = 0;
 
     async function loadProducts() {
       try {
@@ -282,7 +297,7 @@
       if (currentImages.length === 0) currentImages = ['https://via.placeholder.com/400x250?text=無圖片'];
       currentImageIndex = 0;
 
-      // 極速預載
+      // 預載圖片
       currentImages.forEach(src => {
         const img = new Image();
         img.src = src;
@@ -325,16 +340,71 @@
       updateCarousel();
     }
 
-    /* 全螢幕圖片放大 */
+    /* 全螢幕照片檢視器 Lightbox (連動與操作) */
     function openLightbox() {
       const lightbox = document.getElementById('lightbox');
-      const lightboxImg = document.getElementById('lightboxImg');
-      lightboxImg.src = currentImages[currentImageIndex];
+      updateLightboxContent();
       lightbox.style.display = 'flex';
+    }
+
+    function updateLightboxContent() {
+      const lightboxImg = document.getElementById('lightboxImg');
+      const lbPrevBtn = document.getElementById('lbPrevBtn');
+      const lbNextBtn = document.getElementById('lbNextBtn');
+      const lbCounter = document.getElementById('lbCounter');
+
+      lightboxImg.src = currentImages[currentImageIndex];
+      lbCounter.innerText = `${currentImageIndex + 1} / ${currentImages.length}`;
+
+      if (currentImages.length <= 1) {
+        lbPrevBtn.style.display = 'none';
+        lbNextBtn.style.display = 'none';
+      } else {
+        lbPrevBtn.style.display = 'block';
+        lbNextBtn.style.display = 'block';
+      }
+    }
+
+    function changeLightboxImage(direction, event) {
+      if (event) event.stopPropagation();
+      currentImageIndex += direction;
+      if (currentImageIndex < 0) currentImageIndex = currentImages.length - 1;
+      if (currentImageIndex >= currentImages.length) currentImageIndex = 0;
+      
+      updateLightboxContent();
+      updateCarousel(); // 同步更新背景視窗的圖片
     }
 
     function closeLightbox() {
       document.getElementById('lightbox').style.display = 'none';
+    }
+
+    function closeLightboxOnBg(e) {
+      if (e.target.id === 'lightbox') {
+        closeLightbox();
+      }
+    }
+
+    /* 手機觸控左右滑動放大視窗支援 */
+    const lbContainer = document.getElementById('lightbox');
+    lbContainer.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, false);
+
+    lbContainer.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, false);
+
+    function handleSwipe() {
+      const diff = touchEndX - touchStartX;
+      if (Math.abs(diff) > 50) { // 滑動距離超過 50px 才觸發
+        if (diff < 0) {
+          changeLightboxImage(1); // 向左滑 -> 下一張
+        } else {
+          changeLightboxImage(-1); // 向右滑 -> 上一張
+        }
+      }
     }
 
     function closeModal() {
