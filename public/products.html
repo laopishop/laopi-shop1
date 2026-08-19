@@ -45,7 +45,7 @@
       margin-bottom: env(safe-area-inset-bottom, 10px);
     }
 
-    /* 固定在螢幕右上角的懸浮叉叉 */
+    /* 強制固定在螢幕右上角的懸浮叉叉（避開 iPhone 安全區與網址列） */
     .close-btn { 
       position: fixed; 
       top: calc(15px + env(safe-area-inset-top)); 
@@ -90,25 +90,21 @@
     
     /* Lightbox 全螢幕照片 */
     .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.96); z-index: 3000; justify-content: center; align-items: center; overflow: hidden; }
-    .lightbox-img { max-width: 95vw; max-height: 75vh; object-fit: contain; transition: transform 0.15s ease-out; }
+    .lightbox-img { max-width: 95vw; max-height: 85vh; object-fit: contain; transition: transform 0.15s ease-out; }
     .lightbox-close { position: fixed; top: calc(20px + env(safe-area-inset-top)); right: 20px; color: #fff; font-size: 32px; font-weight: bold; cursor: pointer; z-index: 3010; background: rgba(0,0,0,0.6); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid #555; }
     
-    .lightbox-btn { position: fixed; top: 48%; transform: translateY(-50%); background: rgba(0,0,0,0.65); color: #ffd700; border: 1px solid rgba(255,215,0,0.4); font-size: 26px; padding: 14px 16px; cursor: pointer; border-radius: 12px; z-index: 3010; user-select: none; }
+    .lightbox-btn { position: fixed; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.65); color: #ffd700; border: 1px solid rgba(255,215,0,0.4); font-size: 26px; padding: 14px 16px; cursor: pointer; border-radius: 12px; z-index: 3010; user-select: none; }
     .lightbox-btn.prev { left: 15px; }
     .lightbox-btn.next { right: 15px; }
     .lightbox-counter { position: fixed; bottom: calc(25px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); color: #ffd700; background: rgba(0,0,0,0.75); padding: 6px 16px; border-radius: 20px; font-size: 14px; font-weight: bold; border: 1px solid rgba(255,215,0,0.3); z-index: 3010; }
 
-    /* 📱 針對手機版優化：位置稍微向上提（高過下方 1/3），同時預留頂部空間絕不遮擋叉叉 */
+    /* 📱 針對手機版微調 */
     @media (max-width: 768px) {
       .lightbox-img {
-        margin-top: -35px;
-        max-height: 70vh; /* 限制最大高度，保留頂部給關閉按鈕 */
+        margin-top: -70px;
       }
       .lightbox-btn {
-        top: 45%;
-      }
-      .lightbox-counter {
-        bottom: 35px;
+        top: 42%;
       }
     }
 
@@ -131,6 +127,7 @@
 
   <!-- 商品詳情彈窗 Modal -->
   <div id="productModal" class="modal" onclick="closeModalOnBg(event)">
+    <!-- 把關閉按鈕放到 modal 外層獨立定點，固定在螢幕右上角 -->
     <span class="close-btn" onclick="closeModal()">&times;</span>
     
     <div class="modal-content">
