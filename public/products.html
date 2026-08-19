@@ -55,7 +55,7 @@
 
     .modal-desc-box { background: #202020; padding: 14px; border-radius: 10px; font-size: 13px; color: #ddd; line-height: 1.6; white-space: pre-wrap; border: 1px solid #2a2a2a; }
     
-    /* Lightbox 全螢幕照片（預設電腦版：完全不調動） */
+    /* Lightbox 全螢幕照片（預設電腦版：保持置中） */
     .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.96); z-index: 3000; justify-content: center; align-items: center; overflow: hidden; }
     .lightbox-img { max-width: 95vw; max-height: 85vh; object-fit: contain; transition: transform 0.15s ease-out; }
     .lightbox-close { position: fixed; top: 20px; right: 20px; color: #fff; font-size: 32px; font-weight: bold; cursor: pointer; z-index: 3010; background: rgba(0,0,0,0.6); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid #555; }
@@ -65,16 +65,16 @@
     .lightbox-btn.next { right: 15px; }
     .lightbox-counter { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); color: #ffd700; background: rgba(0,0,0,0.75); padding: 6px 16px; border-radius: 20px; font-size: 14px; font-weight: bold; border: 1px solid rgba(255,215,0,0.3); z-index: 3010; }
 
-    /* 📱 僅針對手機版微調（螢幕寬度 768px 以下） */
+    /* 📱 針對手機版加大微調幅度（讓圖片移動至螢幕正中間） */
     @media (max-width: 768px) {
       .lightbox-img {
-        margin-top: -35px; /* 圖片向上移 */
+        margin-top: -70px; /* 加大往上偏移，拉至垂直正中央 */
       }
       .lightbox-btn {
-        top: 46%; /* 箭頭同步向上移 */
+        top: 42%; /* 切換按鈕同步配合向上移 */
       }
       .lightbox-counter {
-        bottom: 35px; /* 頁數文字稍微上提 */
+        bottom: 50px; /* 頁碼顯示也稍微上提 */
       }
     }
 
