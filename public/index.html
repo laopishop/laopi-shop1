@@ -8,9 +8,6 @@
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body { background-color: #0d0d0d; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; padding-bottom: 40px; }
-    
-    /* 鎖定背景滾動 */
-    body.modal-open { overflow: hidden !important; }
 
     /* 頂部 Header & LOGO */
     .header { text-align: center; padding: 25px 15px; background: linear-gradient(180deg, #1c1810 0%, #0d0d0d 100%); border-bottom: 2px solid #d4af37; }
@@ -33,16 +30,6 @@
     /* 區塊標題 */
     .section-title { font-size: 19px; color: #ffd700; margin: 30px 0 15px 0; padding-left: 10px; border-left: 4px solid #ffd700; font-weight: bold; display: flex; align-items: center; gap: 8px; scroll-margin-top: 100px; }
 
-    /* 帳號展示列表 */
-    .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .product-card { background: #161616; border: 1px solid #2c2c2c; border-radius: 12px; overflow: hidden; cursor: pointer; transition: 0.2s; position: relative; }
-    .product-card:active { transform: scale(0.97); }
-    .product-badge { position: absolute; top: 8px; left: 8px; background: #ff4500; color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 10px; font-weight: bold; z-index: 2; }
-    .product-img { width: 100%; height: 140px; object-fit: cover; background: #222; display: block; }
-    .product-info { padding: 10px; }
-    .product-title { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 38px; line-height: 1.3; }
-    .product-price { font-size: 16px; color: #ffd700; font-weight: bold; }
-
     /* 文字卡片區塊 */
     .info-card { background: #161616; border: 1px solid #2a2a2a; border-radius: 12px; padding: 18px; margin-bottom: 15px; color: #ddd; line-height: 1.7; font-size: 14px; }
     .info-card h3 { color: #ffd700; margin-top: 0; margin-bottom: 12px; font-size: 16px; border-bottom: 1px solid #2a2a2a; padding-bottom: 8px; }
@@ -57,44 +44,6 @@
     .btn-line { background: #06c755; }
     .btn-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
     .btn-fb { background: #1877f2; }
-
-    /* 商品詳情彈窗 Modal */
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 1000; justify-content: center; align-items: center; padding: 12px; }
-    .modal-content { background: #161616; width: 100%; max-width: 480px; max-height: 92vh; border-radius: 16px; border: 1px solid #d4af37; overflow-y: auto; padding: 16px; position: relative; -webkit-overflow-scrolling: touch; }
-    .close-btn { position: absolute; top: 10px; right: 15px; font-size: 28px; color: #fff; cursor: pointer; z-index: 20; font-weight: bold; background: rgba(0,0,0,0.5); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-
-    /* 輪播容器 */
-    .carousel { position: relative; width: 100%; height: 340px; background: #000; border-radius: 10px; overflow: hidden; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; border: 1px solid #222; }
-    .carousel img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer; }
-    .zoom-tip { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.75); color: #ffd700; font-size: 11px; padding: 4px 8px; border-radius: 6px; pointer-events: none; border: 1px solid rgba(255,215,0,0.3); z-index: 5; }
-    
-    .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.7); color: #fff; border: 1px solid #555; font-size: 22px; padding: 12px 14px; cursor: pointer; border-radius: 8px; z-index: 10; user-select: none; }
-    .carousel-btn.prev { left: 8px; }
-    .carousel-btn.next { right: 8px; }
-    .dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 15px; }
-    .dot { width: 8px; height: 8px; background: #444; border-radius: 50%; transition: 0.2s; }
-    .dot.active { background: #ffd700; width: 18px; border-radius: 4px; }
-
-    .modal-title { font-size: 17px; color: #fff; margin-bottom: 8px; font-weight: bold; line-height: 1.4; }
-    .modal-uid { font-size: 13px; color: #ffd700; background: #222; padding: 6px 12px; border-radius: 6px; display: inline-block; margin-bottom: 15px; border: 1px solid #333; font-weight: bold; }
-    
-    .action-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-    .btn-buy { background: #ff4500; color: #fff; text-decoration: none; padding: 14px 0; border-radius: 25px; font-weight: bold; font-size: 16px; text-align: center; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .btn-share { background: #222; color: #fff; text-decoration: none; padding: 12px 0; border-radius: 25px; font-weight: bold; font-size: 14px; text-align: center; border: 1px solid #444; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-
-    .modal-desc-box { background: #202020; padding: 14px; border-radius: 10px; font-size: 13px; color: #ddd; line-height: 1.6; white-space: pre-wrap; border: 1px solid #2a2a2a; }
-    
-    /* Lightbox */
-    .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.96); z-index: 3000; justify-content: center; align-items: center; overflow: hidden; }
-    .lightbox-img { max-width: 95vw; max-height: 85vh; object-fit: contain; transition: transform 0.15s ease-out; }
-    .lightbox-close { position: fixed; top: 20px; right: 20px; color: #fff; font-size: 32px; font-weight: bold; cursor: pointer; z-index: 3010; background: rgba(0,0,0,0.6); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid #555; }
-    
-    .lightbox-btn { position: fixed; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.65); color: #ffd700; border: 1px solid rgba(255,215,0,0.4); font-size: 26px; padding: 14px 16px; cursor: pointer; border-radius: 12px; z-index: 3010; user-select: none; }
-    .lightbox-btn.prev { left: 15px; }
-    .lightbox-btn.next { right: 15px; }
-    .lightbox-counter { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); color: #ffd700; background: rgba(0,0,0,0.75); padding: 6px 16px; border-radius: 20px; font-size: 14px; font-weight: bold; border: 1px solid rgba(255,215,0,0.3); z-index: 3010; }
-
-    .toast { display: none; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #ffd700; color: #000; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 14px; z-index: 4000; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
   </style>
 </head>
 <body>
@@ -106,9 +55,9 @@
     <p>🔥 Free Fire 專業帳號交易・誠信首選 🔥</p>
   </div>
 
-  <!-- 選單捷徑導覽列 (瀏覽現貨改為 target="_blank" 另開分頁) -->
+  <!-- 選單捷徑導覽列 -->
   <div class="nav-bar">
-    <a href="#sec-products" target="_blank" class="nav-link">🎮 瀏覽現貨</a>
+    <a href="/products.html" target="_blank" class="nav-link">🎮 瀏覽現貨</a>
     <a href="#sec-process" class="nav-link">🛒 購買流程</a>
     <a href="#sec-payment" class="nav-link">💳 付款方式</a>
     <a href="#sec-service" class="nav-link">🛡️ 售後服務</a>
@@ -118,20 +67,14 @@
 
   <div class="container">
     
-    <!-- 2. 主打大按鈕 (改為 target="_blank" 另開分頁) -->
+    <!-- 2. 主打大按鈕 (點擊另開分頁進入帳號頁面) -->
     <div class="hero-section">
-      <a href="#sec-products" target="_blank" class="btn-browse-main">
+      <a href="/products.html" target="_blank" class="btn-browse-main">
         🎮 瀏覽現貨帳號
       </a>
     </div>
 
-    <!-- 3. 專屬帳號查看區 -->
-    <div class="section-title" id="sec-products">🔥 熱門現貨帳號列表</div>
-    <div class="product-grid" id="productGrid">
-      <div style="grid-column: 1 / -1; text-align: center; color: #888; padding: 30px;">正在載入現貨帳號...</div>
-    </div>
-
-    <!-- 4. 購買流程區塊 -->
+    <!-- 3. 購買流程區塊 -->
     <div class="section-title" id="sec-process">🛒 購買流程</div>
     <div class="info-card">
       <ul class="step-list">
@@ -147,7 +90,7 @@
       </ul>
     </div>
 
-    <!-- 5. 付款方式區塊 -->
+    <!-- 4. 付款方式區塊 -->
     <div class="section-title" id="sec-payment">💳 付款方式</div>
     <div class="info-card">
       <h3>💳 老皮小店｜付款方式</h3>
@@ -159,7 +102,7 @@
       </ul>
     </div>
 
-    <!-- 6. 售後服務區塊 -->
+    <!-- 5. 售後服務區塊 -->
     <div class="section-title" id="sec-service">🛡️ 售後服務</div>
     <div class="info-card">
       <h3>🛡️ 老皮小店｜售後服務</h3>
@@ -171,7 +114,7 @@
       </ul>
     </div>
 
-    <!-- 7. 聯絡客服區塊 -->
+    <!-- 6. 聯絡客服區塊 -->
     <div class="section-title" id="sec-contact">💬 聯絡客服</div>
     <div class="info-card">
       <h3>💬 老皮小店｜聯絡客服</h3>
@@ -179,7 +122,7 @@
       <p style="margin: 5px 0; color: #ffd700;">✨ 我們會盡快為您服務！</p>
     </div>
 
-    <!-- 8. 最下方官方社群連結 -->
+    <!-- 7. 最下方官方社群連結 -->
     <div class="social-section">
       <div style="text-align: center; color: #aaa; font-size: 13px;">—— 官方社群與客服連結 ——</div>
       <div class="social-grid">
@@ -197,259 +140,5 @@
 
   </div>
 
-  <!-- 專屬帳號詳情彈窗 Modal -->
-  <div id="productModal" class="modal" onclick="closeModalOnBg(event)">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal()">&times;</span>
-      
-      <!-- 多圖輪播區塊 -->
-      <div class="carousel">
-        <img id="carouselImg" src="" alt="帳號圖片" onclick="openLightbox()">
-        <button class="carousel-btn prev" onclick="changeImage(-1, event)">&#10094;</button>
-        <button class="carousel-btn next" onclick="changeImage(1, event)">&#10095;</button>
-        <div class="zoom-tip">🔍 點擊查看原圖放大</div>
-      </div>
-      <div class="dots" id="dotsBox"></div>
-
-      <div class="modal-title" id="modalTitle"></div>
-      <div class="modal-uid" id="modalPrice"></div>
-
-      <!-- 操作按鈕組 -->
-      <div class="action-group">
-        <a href="https://line.me/R/ti/p/@739njwrp" target="_blank" class="btn-buy">
-          💬 詢問 / 購買此帳號
-        </a>
-        <button class="btn-share" onclick="copyShareLink()">
-          🔗 分享此商品 (複製專屬連結)
-        </button>
-      </div>
-
-      <!-- 帳號詳細介紹 -->
-      <div class="modal-desc-box" id="modalDesc"></div>
-    </div>
-  </div>
-
-  <!-- 全螢幕照片檢視器 Lightbox -->
-  <div id="lightbox" class="lightbox" onclick="closeLightboxOnBg(event)">
-    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-    
-    <button class="lightbox-btn prev" id="lbPrevBtn" onclick="changeLightboxImage(-1, event)">&#10094;</button>
-    <img id="lightboxImg" class="lightbox-img" src="" alt="放大照片">
-    <button class="lightbox-btn next" id="lbNextBtn" onclick="changeLightboxImage(1, event)">&#10095;</button>
-    
-    <div class="lightbox-counter" id="lbCounter">1 / 1</div>
-  </div>
-
-  <div id="toast" class="toast">已複製商品專屬連結！</div>
-
-  <script>
-    let productsList = [];
-    let currentImages = [];
-    let currentImageIndex = 0;
-    let currentActiveProductId = null;
-
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    async function loadProducts() {
-      try {
-        const res = await fetch('/api/products');
-        productsList = await res.json();
-        renderProducts();
-        checkUrlParam();
-      } catch (err) {
-        document.getElementById('productGrid').innerHTML = '<div style="grid-column:1/-1; text-align:center; color:#888;">載入商品失敗，請稍後重試</div>';
-      }
-    }
-
-    function renderProducts() {
-      const activeProducts = productsList.filter(p => p.isActive);
-      const grid = document.getElementById('productGrid');
-
-      if (activeProducts.length === 0) {
-        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; color:#888; padding:30px;">目前尚無架上帳號，請至後台新增！</div>';
-        return;
-      }
-
-      grid.innerHTML = activeProducts.map(p => {
-        const imgs = (p.imageUrl || '').split(',').filter(Boolean);
-        const coverImg = imgs.length > 0 ? imgs[0] : 'https://via.placeholder.com/200x140?text=無圖片';
-
-        return `
-          <div class="product-card" onclick="openModal(${p.id})">
-            <span class="product-badge">熱銷現貨</span>
-            <img class="product-img" src="${escapeHtml(coverImg)}" alt="${escapeHtml(p.name)}">
-            <div class="product-info">
-              <div class="product-title">${escapeHtml(p.name)}</div>
-              <div class="product-price">NT$ ${p.price}</div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function openModal(id) {
-      const p = productsList.find(item => item.id === id);
-      if (!p) return;
-
-      currentActiveProductId = id;
-      currentImages = (p.imageUrl || '').split(',').filter(Boolean);
-      if (currentImages.length === 0) currentImages = ['https://via.placeholder.com/400x250?text=無圖片'];
-      currentImageIndex = 0;
-
-      currentImages.forEach(src => {
-        const img = new Image();
-        img.src = src;
-      });
-
-      updateCarousel();
-
-      document.getElementById('modalTitle').innerText = p.name;
-      document.getElementById('modalPrice').innerText = `💰 售價：NT$ ${p.price}`;
-      document.getElementById('modalDesc').innerText = p.description || '暫無詳細資訊說明。';
-
-      document.getElementById('productModal').style.display = 'flex';
-      
-      /* 鎖定主頁面滾動 */
-      document.body.classList.add('modal-open');
-    }
-
-    function updateCarousel() {
-      const imgElem = document.getElementById('carouselImg');
-      imgElem.src = currentImages[currentImageIndex];
-
-      const prevBtn = document.querySelector('.carousel-btn.prev');
-      const nextBtn = document.querySelector('.carousel-btn.next');
-      if (currentImages.length <= 1) {
-        prevBtn.style.display = 'none';
-        nextBtn.style.display = 'none';
-      } else {
-        prevBtn.style.display = 'block';
-        nextBtn.style.display = 'block';
-      }
-
-      const dotsBox = document.getElementById('dotsBox');
-      dotsBox.innerHTML = currentImages.map((_, idx) => `
-        <div class="dot ${idx === currentImageIndex ? 'active' : ''}"></div>
-      `).join('');
-    }
-
-    function changeImage(direction, event) {
-      if (event) event.stopPropagation();
-      currentImageIndex += direction;
-      if (currentImageIndex < 0) currentImageIndex = currentImages.length - 1;
-      if (currentImageIndex >= currentImages.length) currentImageIndex = 0;
-      updateCarousel();
-    }
-
-    function openLightbox() {
-      const lightbox = document.getElementById('lightbox');
-      updateLightboxContent();
-      lightbox.style.display = 'flex';
-    }
-
-    function updateLightboxContent() {
-      const lightboxImg = document.getElementById('lightboxImg');
-      const lbPrevBtn = document.getElementById('lbPrevBtn');
-      const lbNextBtn = document.getElementById('lbNextBtn');
-      const lbCounter = document.getElementById('lbCounter');
-
-      lightboxImg.src = currentImages[currentImageIndex];
-      lbCounter.innerText = `${currentImageIndex + 1} / ${currentImages.length}`;
-
-      if (currentImages.length <= 1) {
-        lbPrevBtn.style.display = 'none';
-        lbNextBtn.style.display = 'none';
-      } else {
-        lbPrevBtn.style.display = 'block';
-        lbNextBtn.style.display = 'block';
-      }
-    }
-
-    function changeLightboxImage(direction, event) {
-      if (event) event.stopPropagation();
-      currentImageIndex += direction;
-      if (currentImageIndex < 0) currentImageIndex = currentImages.length - 1;
-      if (currentImageIndex >= currentImages.length) currentImageIndex = 0;
-      
-      updateLightboxContent();
-      updateCarousel();
-    }
-
-    function closeLightbox() {
-      document.getElementById('lightbox').style.display = 'none';
-    }
-
-    function closeLightboxOnBg(e) {
-      if (e.target.id === 'lightbox') {
-        closeLightbox();
-      }
-    }
-
-    const lbContainer = document.getElementById('lightbox');
-    lbContainer.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    }, false);
-
-    lbContainer.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    }, false);
-
-    function handleSwipe() {
-      const diff = touchEndX - touchStartX;
-      if (Math.abs(diff) > 50) {
-        if (diff < 0) {
-          changeLightboxImage(1);
-        } else {
-          changeLightboxImage(-1);
-        }
-      }
-    }
-
-    function closeModal() {
-      document.getElementById('productModal').style.display = 'none';
-      /* 恢復主頁面滾動 */
-      document.body.classList.remove('modal-open');
-      if (history.pushState) {
-        history.pushState(null, null, window.location.pathname);
-      }
-    }
-
-    function closeModalOnBg(e) {
-      if (e.target.id === 'productModal') closeModal();
-    }
-
-    function copyShareLink() {
-      if (!currentActiveProductId) return;
-      const shareUrl = `${window.location.origin}${window.location.pathname}?id=${currentActiveProductId}`;
-      navigator.clipboard.writeText(shareUrl).then(() => {
-        showToast("已複製商品專屬連結！");
-      }).catch(() => {
-        showToast("複製失敗，請手動複製網址");
-      });
-    }
-
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      toast.innerText = msg;
-      toast.style.display = 'block';
-      setTimeout(() => { toast.style.display = 'none'; }, 2000);
-    }
-
-    function checkUrlParam() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const productId = urlParams.get('id');
-      if (productId) {
-        openModal(parseInt(productId));
-      }
-    }
-
-    function escapeHtml(str) {
-      return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    }
-
-    loadProducts();
-  </script>
 </body>
 </html>
