@@ -11,11 +11,11 @@
 
     /* 頂部 Header & LOGO */
     .header { text-align: center; padding: 25px 15px; background: linear-gradient(180deg, #1c1810 0%, #0d0d0d 100%); border-bottom: 2px solid #d4af37; }
-    .logo-img { width: 130px; height: 130px; border-radius: 50%; border: 3px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); object-fit: cover; margin-bottom: 12px; }
+    .logo-img { width: 140px; height: 140px; border-radius: 50%; border: 3px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); object-fit: cover; margin-bottom: 12px; }
     .header h1 { color: #ffd700; margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 1.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
     .header p { color: #d4af37; font-size: 14px; margin-top: 6px; font-weight: bold; }
 
-    /* 選單捷徑導覽列 */
+    /* 固定頂部導覽列 */
     .nav-bar { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 12px; background: #141414; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 99; }
     .nav-link { color: #e0e0e0; text-decoration: none; font-size: 13px; padding: 8px 12px; background: #1f1f1f; border-radius: 20px; border: 1px solid #333; font-weight: 500; }
     .nav-link:active { background: #d4af37; color: #000; }
@@ -27,10 +27,10 @@
     .btn-browse-main { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; background: linear-gradient(135deg, #ff8c00, #ff4500); color: #fff; font-size: 19px; font-weight: bold; padding: 16px 0; border-radius: 30px; text-decoration: none; box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4); border: 1px solid #ff7f50; }
     .btn-browse-main:active { transform: scale(0.98); }
 
-    /* 區塊標題 */
-    .section-title { font-size: 19px; color: #ffd700; margin: 30px 0 15px 0; padding-left: 10px; border-left: 4px solid #ffd700; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+    /* 區塊標題（加入 scroll-margin-top 解決錨點被選單遮住問題） */
+    .section-title { font-size: 19px; color: #ffd700; margin: 30px 0 15px 0; padding-left: 10px; border-left: 4px solid #ffd700; font-weight: bold; display: flex; align-items: center; gap: 8px; scroll-margin-top: 100px; }
 
-    /* 帳號展示列表（類似圖5） */
+    /* 帳號展示列表 */
     .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .product-card { background: #161616; border: 1px solid #2c2c2c; border-radius: 12px; overflow: hidden; cursor: pointer; transition: 0.2s; position: relative; }
     .product-card:active { transform: scale(0.97); }
@@ -40,7 +40,7 @@
     .product-title { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 38px; line-height: 1.3; }
     .product-price { font-size: 16px; color: #ffd700; font-weight: bold; }
 
-    /* 文字卡片區塊（流程/付款/售後/聯絡） */
+    /* 文字卡片區塊 */
     .info-card { background: #161616; border: 1px solid #2a2a2a; border-radius: 12px; padding: 18px; margin-bottom: 15px; color: #ddd; line-height: 1.7; font-size: 14px; }
     .info-card h3 { color: #ffd700; margin-top: 0; margin-bottom: 12px; font-size: 16px; border-bottom: 1px solid #2a2a2a; padding-bottom: 8px; }
     .step-list { list-style: none; padding: 0; margin: 0; }
@@ -55,7 +55,7 @@
     .btn-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
     .btn-fb { background: #1877f2; }
 
-    /* 專屬商品詳情彈窗 Modal (類似圖6) */
+    /* 專屬商品詳情彈窗 Modal */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 1000; justify-content: center; align-items: center; padding: 12px; }
     .modal-content { background: #161616; width: 100%; max-width: 480px; max-height: 92vh; border-radius: 16px; border: 1px solid #d4af37; overflow-y: auto; padding: 16px; position: relative; }
     .close-btn { position: absolute; top: 10px; right: 15px; font-size: 28px; color: #aaa; cursor: pointer; z-index: 20; font-weight: bold; }
@@ -86,14 +86,14 @@
 </head>
 <body>
 
-  <!-- 1. 頂部 Header & 顯眼 LOGO -->
+  <!-- 1. 頂部 Header & 正確黃衣 LOGO -->
   <div class="header">
-    <img class="logo-img" src="https://i.ibb.co/yB7hjqGL/IMG-0555.jpg" alt="老皮小店 LOGO" onerror="this.src='https://via.placeholder.com/130?text=LAOPI'">
+    <img class="logo-img" src="https://i.ibb.co/LdrqYVvL/LOGO.jpg" alt="老皮小店 LOGO" onerror="this.src='https://i.ibb.co/yB7hjqGL/IMG-0555.jpg'">
     <h1>老皮小店 LAOPI SHOP</h1>
     <p>🔥 Free Fire 專業帳號交易・誠信首選 🔥</p>
   </div>
 
-  <!-- 選單捷徑導覽列 (點擊滑動到對應區塊) -->
+  <!-- 選單捷徑導覽列 -->
   <div class="nav-bar">
     <a href="#sec-products" class="nav-link">🎮 瀏覽現貨</a>
     <a href="#sec-process" class="nav-link">🛒 購買流程</a>
@@ -112,7 +112,7 @@
       </a>
     </div>
 
-    <!-- 3. 專屬帳號查看區 (類似圖5) -->
+    <!-- 3. 專屬帳號查看區 -->
     <div class="section-title" id="sec-products">🔥 熱門現貨帳號列表</div>
     <div class="product-grid" id="productGrid">
       <div style="grid-column: 1 / -1; text-align: center; color: #888; padding: 30px;">正在載入現貨帳號...</div>
@@ -184,7 +184,7 @@
 
   </div>
 
-  <!-- 專屬帳號詳情彈窗 Modal (類似圖6) -->
+  <!-- 專屬帳號詳情彈窗 Modal -->
   <div id="productModal" class="modal" onclick="closeModalOnBg(event)">
     <div class="modal-content">
       <span class="close-btn" onclick="closeModal()">&times;</span>
@@ -223,19 +223,17 @@
     let currentImageIndex = 0;
     let currentActiveProductId = null;
 
-    // 載入商品資料
     async function loadProducts() {
       try {
         const res = await fetch('/api/products');
         productsList = await res.json();
         renderProducts();
-        checkUrlParam(); // 檢查網址是否有專屬分享連結
+        checkUrlParam();
       } catch (err) {
         document.getElementById('productGrid').innerHTML = '<div style="grid-column:1/-1; text-align:center; color:#888;">載入商品失敗，請稍後重試</div>';
       }
     }
 
-    // 渲染帳號網格列表 (類似圖5)
     function renderProducts() {
       const activeProducts = productsList.filter(p => p.isActive);
       const grid = document.getElementById('productGrid');
@@ -262,7 +260,6 @@
       }).join('');
     }
 
-    // 開啟專屬帳號詳情彈窗 (類似圖6)
     function openModal(id) {
       const p = productsList.find(item => item.id === id);
       if (!p) return;
@@ -281,7 +278,6 @@
       document.getElementById('productModal').style.display = 'flex';
     }
 
-    // 輪播圖片更新
     function updateCarousel() {
       document.getElementById('carouselImg').src = currentImages[currentImageIndex];
       
@@ -310,7 +306,6 @@
 
     function closeModal() {
       document.getElementById('productModal').style.display = 'none';
-      // 清除網址上的 id 參數
       if (history.pushState) {
         history.pushState(null, null, window.location.pathname);
       }
@@ -320,7 +315,6 @@
       if (e.target.id === 'productModal') closeModal();
     }
 
-    // 複製商品專屬連結
     function copyShareLink() {
       if (!currentActiveProductId) return;
       const shareUrl = `${window.location.origin}${window.location.pathname}?id=${currentActiveProductId}`;
@@ -338,7 +332,6 @@
       setTimeout(() => { toast.style.display = 'none'; }, 2000);
     }
 
-    // 檢查網址參數自動開啟商品 (支援分享連結直達)
     function checkUrlParam() {
       const urlParams = new URLSearchParams(window.location.search);
       const productId = urlParams.get('id');
