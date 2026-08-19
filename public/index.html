@@ -22,19 +22,19 @@
 
     .container { max-width: 500px; margin: 0 auto; padding: 0 15px; }
 
-    /* 英雄區塊：主打「瀏覽現貨帳號」按鈕 */
+    /* 英雄區塊：主打按鈕 */
     .hero-section { text-align: center; margin: 25px 0; }
     .btn-browse-main { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; background: linear-gradient(135deg, #ff8c00, #ff4500); color: #fff; font-size: 19px; font-weight: bold; padding: 16px 0; border-radius: 30px; text-decoration: none; box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4); border: 1px solid #ff7f50; }
     .btn-browse-main:active { transform: scale(0.98); }
 
-    /* 區塊標題（加入 scroll-margin-top 解決錨點被選單遮住問題） */
+    /* 區塊標題 */
     .section-title { font-size: 19px; color: #ffd700; margin: 30px 0 15px 0; padding-left: 10px; border-left: 4px solid #ffd700; font-weight: bold; display: flex; align-items: center; gap: 8px; scroll-margin-top: 100px; }
 
     /* 帳號展示列表 */
     .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .product-card { background: #161616; border: 1px solid #2c2c2c; border-radius: 12px; overflow: hidden; cursor: pointer; transition: 0.2s; position: relative; }
     .product-card:active { transform: scale(0.97); }
-    .product-badge { position: absolute; top: 8px; left: 8px; background: #ff4500; color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 10px; font-weight: bold; }
+    .product-badge { position: absolute; top: 8px; left: 8px; background: #ff4500; color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 10px; font-weight: bold; z-index: 2; }
     .product-img { width: 100%; height: 140px; object-fit: cover; background: #222; display: block; }
     .product-info { padding: 10px; }
     .product-title { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 38px; line-height: 1.3; }
@@ -55,23 +55,25 @@
     .btn-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
     .btn-fb { background: #1877f2; }
 
-    /* 專屬商品詳情彈窗 Modal */
+    /* 商品詳情彈窗 Modal */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 1000; justify-content: center; align-items: center; padding: 12px; }
     .modal-content { background: #161616; width: 100%; max-width: 480px; max-height: 92vh; border-radius: 16px; border: 1px solid #d4af37; overflow-y: auto; padding: 16px; position: relative; }
-    .close-btn { position: absolute; top: 10px; right: 15px; font-size: 28px; color: #aaa; cursor: pointer; z-index: 20; font-weight: bold; }
+    .close-btn { position: absolute; top: 10px; right: 15px; font-size: 28px; color: #fff; cursor: pointer; z-index: 20; font-weight: bold; background: rgba(0,0,0,0.5); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
-    /* 多圖輪播 */
-    .carousel { position: relative; width: 100%; height: 250px; background: #000; border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
-    .carousel img { width: 100%; height: 100%; object-fit: contain; }
-    .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: #fff; border: none; font-size: 22px; padding: 8px 12px; cursor: pointer; border-radius: 4px; }
-    .carousel-btn.prev { left: 5px; }
-    .carousel-btn.next { right: 5px; }
-    .dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 12px; }
-    .dot { width: 8px; height: 8px; background: #444; border-radius: 50%; }
-    .dot.active { background: #ffd700; width: 16px; border-radius: 4px; }
+    /* 自適應長高比例的輪播容器 */
+    .carousel { position: relative; width: 100%; min-height: 200px; max-height: 60vh; background: #050505; border-radius: 10px; overflow: hidden; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; border: 1px solid #222; cursor: zoom-in; }
+    .carousel img { width: 100%; height: auto; max-height: 60vh; object-fit: contain; display: block; }
+    .zoom-tip { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.7); color: #ffd700; font-size: 11px; padding: 4px 8px; border-radius: 6px; pointer-events: none; border: 1px solid rgba(255,215,0,0.3); }
+    
+    .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.65); color: #fff; border: 1px solid #444; font-size: 20px; padding: 10px 14px; cursor: pointer; border-radius: 8px; z-index: 10; }
+    .carousel-btn.prev { left: 8px; }
+    .carousel-btn.next { right: 8px; }
+    .dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 15px; }
+    .dot { width: 8px; height: 8px; background: #444; border-radius: 50%; transition: 0.2s; }
+    .dot.active { background: #ffd700; width: 18px; border-radius: 4px; }
 
     .modal-title { font-size: 17px; color: #fff; margin-bottom: 8px; font-weight: bold; line-height: 1.4; }
-    .modal-uid { font-size: 13px; color: #aaa; background: #222; padding: 6px 12px; border-radius: 6px; display: inline-block; margin-bottom: 15px; border: 1px solid #333; }
+    .modal-uid { font-size: 13px; color: #ffd700; background: #222; padding: 6px 12px; border-radius: 6px; display: inline-block; margin-bottom: 15px; border: 1px solid #333; font-weight: bold; }
     
     /* 詳情頁核心按鈕 */
     .action-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
@@ -80,13 +82,17 @@
 
     .modal-desc-box { background: #202020; padding: 14px; border-radius: 10px; font-size: 13px; color: #ddd; line-height: 1.6; white-space: pre-wrap; border: 1px solid #2a2a2a; }
     
-    /* 複製提示訊息 */
-    .toast { display: none; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #ffd700; color: #000; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 14px; z-index: 2000; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+    /* 全螢幕照片檢視器 Lightbox */
+    .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 3000; justify-content: center; align-items: center; overflow: auto; }
+    .lightbox-img { max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.2s ease; cursor: grab; }
+    .lightbox-close { position: fixed; top: 20px; right: 20px; color: #fff; font-size: 32px; font-weight: bold; cursor: pointer; z-index: 3010; background: rgba(0,0,0,0.6); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid #555; }
+
+    .toast { display: none; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #ffd700; color: #000; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 14px; z-index: 4000; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
   </style>
 </head>
 <body>
 
-  <!-- 1. 頂部 Header & 直接讀取本地 logo.jpg -->
+  <!-- 1. 頂部 Header & LOGO -->
   <div class="header">
     <img class="logo-img" src="/logo.jpg" alt="老皮小店 LOGO">
     <h1>老皮小店 LAOPI SHOP</h1>
@@ -105,7 +111,7 @@
 
   <div class="container">
     
-    <!-- 2. 主打大按鈕：瀏覽現貨帳號 -->
+    <!-- 2. 主打大按鈕 -->
     <div class="hero-section">
       <a href="#sec-products" class="btn-browse-main">
         🎮 瀏覽現貨帳號
@@ -189,11 +195,12 @@
     <div class="modal-content">
       <span class="close-btn" onclick="closeModal()">&times;</span>
       
-      <!-- 多圖輪播區塊 -->
-      <div class="carousel">
+      <!-- 多圖輪播區塊 (可點擊圖片開啟全螢幕) -->
+      <div class="carousel" onclick="openLightbox()">
         <img id="carouselImg" src="" alt="帳號圖片">
-        <button class="carousel-btn prev" onclick="changeImage(-1)">&#10094;</button>
-        <button class="carousel-btn next" onclick="changeImage(1)">&#10095;</button>
+        <button class="carousel-btn prev" onclick="changeImage(-1, event)">&#10094;</button>
+        <button class="carousel-btn next" onclick="changeImage(1, event)">&#10095;</button>
+        <div class="zoom-tip">🔍 點擊查看原圖 / 放大</div>
       </div>
       <div class="dots" id="dotsBox"></div>
 
@@ -213,6 +220,12 @@
       <!-- 帳號詳細介紹 -->
       <div class="modal-desc-box" id="modalDesc"></div>
     </div>
+  </div>
+
+  <!-- 全螢幕照片檢視器 Lightbox -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    <img id="lightboxImg" class="lightbox-img" src="" alt="放大照片">
   </div>
 
   <div id="toast" class="toast">已複製商品專屬連結！</div>
@@ -269,6 +282,12 @@
       if (currentImages.length === 0) currentImages = ['https://via.placeholder.com/400x250?text=無圖片'];
       currentImageIndex = 0;
 
+      // 核心預載優化：背景預先下載所有圖片，確保切換流暢不卡頓
+      currentImages.forEach(src => {
+        const img = new Image();
+        img.src = src;
+      });
+
       updateCarousel();
 
       document.getElementById('modalTitle').innerText = p.name;
@@ -297,11 +316,24 @@
       `).join('');
     }
 
-    function changeImage(direction) {
+    function changeImage(direction, event) {
+      if (event) event.stopPropagation();
       currentImageIndex += direction;
       if (currentImageIndex < 0) currentImageIndex = currentImages.length - 1;
       if (currentImageIndex >= currentImages.length) currentImageIndex = 0;
       updateCarousel();
+    }
+
+    /* 全螢幕圖片放大燈箱控制 */
+    function openLightbox() {
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      lightboxImg.src = currentImages[currentImageIndex];
+      lightbox.style.display = 'flex';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').style.display = 'none';
     }
 
     function closeModal() {
