@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>關於我們 | 老皮小店 LAOPI SHOP</title>
+
+  <!-- 引入 Font Awesome 官方 Icon 圖庫 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * { box-sizing: border-box; }
+    body { background-color: #0d0d0d; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; padding-bottom: 50px; }
+
+    /* 頂部 Hero 區塊 */
+    .hero {
+      text-align: center;
+      padding: 35px 20px 25px 20px;
+      background: linear-gradient(180deg, #1f1a0a 0%, #0d0d0d 100%);
+      border-bottom: 2px solid #d4af37;
+    }
+    .logo-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid #ffd700;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+      object-fit: cover;
+      margin-bottom: 12px;
+    }
+
+    .container { max-width: 500px; margin: 0 auto; padding: 0 15px; }
+
+    /* 最頂部顯眼大標題 */
+    .page-main-title {
+      font-size: 24px;
+      font-weight: 900;
+      color: #ffd700;
+      text-align: center;
+      margin: 25px 0 20px 0;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+    }
+
+    /* 4 個大區塊卡片樣式 (參考圖 3 深色外框風格) */
+    .about-card {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 18px;
+      padding: 22px 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    /* 卡片內的大標題 (圖 3 白字大字體風格) */
+    .card-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #ffffff;
+      margin-bottom: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    /* 卡片內容內文 */
+    .card-content {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #cccccc;
+    }
+    .card-content p {
+      margin: 0 0 10px 0;
+    }
+    .card-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* 第 3 塊標題項目條目號碼 */
+    .feature-item {
+      margin-bottom: 14px;
+    }
+    .feature-item:last-child { margin-bottom: 0; }
+    .feature-title {
+      font-weight: bold;
+      color: #ffd700;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    /* 第 4 塊資訊條目與標誌圖示 */
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .contact-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #fff;
+    }
+    .contact-icon.line { background: #06C755; }
+    .contact-icon.instagram { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); }
+
+    .brand-closing {
+      text-align: center;
+      font-weight: bold;
+      color: #ffd700;
+      margin-top: 15px;
+      font-size: 15px;
+    }
+
+    footer {
+      text-align: center;
+      color: #666;
+      font-size: 12px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <img src="/logo.jpg" alt="老皮小店 Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/120?text=LAOPI'">
+  </div>
+
+  <div class="container">
+
+    <!-- 最上方顯眼頁面大標題 -->
+    <div class="page-main-title">關於我們｜ABOUT LAOPI SHOP</div>
+
+    <!-- 第一塊卡片 -->
+    <div class="about-card">
+      <div class="card-title">👑 老皮小店｜LAOPI SHOP</div>
+      <div class="card-content">
+        <p>老皮小店是一個專注於 Free Fire 遊戲帳號交易 的線上商店。</p>
+        <p>我們希望提供的不只是帳號商品，更是一個讓玩家能夠安心了解、輕鬆挑選、放心交易的購買環境。</p>
+      </div>
+    </div>
+
+    <!-- 第二塊卡片 -->
+    <div class="about-card">
+      <div class="card-title">💛 我們的理念</div>
+      <div class="card-content">
+        <p>我們知道，對玩家而言，一個陪伴自己很久的帳號不只是一串數據，而是投入時間與心力累積而成的遊戲回憶。</p>
+        <p>因此，我們希望用認真、透明、負責任的方式經營每一筆交易。我們不追求一次性的買賣，而是希望透過每一次良好的服務，慢慢建立客人的信任。</p>
+      </div>
+    </div>
+
+    <!-- 第三塊卡片 -->
+    <div class="about-card">
+      <div class="card-title">🖤 我們重視的事情</div>
+      <div class="card-content">
+        
+        <div class="feature-item">
+          <div class="feature-title">① 商品資訊透明</div>
+          <div>清楚整理帳號內容、特色、價格等資訊，讓客人在購買前能夠充分了解。</div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-title">② 交易流程簡單</div>
+          <div>從商品詢問、確認，到後續交易流程，都由客服協助處理，減少不必要的複雜步驟。</div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-title">③ 重視交易安全</div>
+          <div>我們重視每一筆交易，並依照店內交易規則及相關流程進行，讓買賣雙方都能有清楚的交易依據。</div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-title">④ 售後服務</div>
+          <div>交易完成後，如遇到符合售後規範的相關問題，可以聯繫客服，我們會協助確認與處理。</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 第四塊卡片 -->
+    <div class="about-card">
+      <div class="card-title">🎮 老皮小店</div>
+      <div class="card-content">
+        <p>買賣找老皮｜安心陪著你</p>
+        <p>感謝每一位支持老皮小店的玩家。<br>未來我們也會持續整理更多優質商品，努力提供更好的服務與交易體驗。</p>
+        
+        <hr style="border: 0; border-top: 1px solid #333; margin: 15px 0;">
+
+        <div class="contact-item">
+          <span>🕒 客服時間｜10:00 ～ 24:00</span>
+        </div>
+
+        <!-- 採用官方高畫質圖示取代原 Emoji -->
+        <div class="contact-item">
+          <div class="contact-icon line"><i class="fa-brands fa-line"></i></div>
+          <span>官方 LINE｜@739njwrp</span>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon instagram"><i class="fa-brands fa-instagram"></i></div>
+          <span>Instagram｜laopi_ff_shop</span>
+        </div>
+
+        <div class="brand-closing">老皮小店｜用心經營，安心交易。🖤💛</div>
+      </div>
+    </div>
+
+    <footer>
+      © 2026 老皮小店 LAOPI SHOP. All Rights Reserved.
+    </footer>
+
+  </div>
+
+</body>
+</html>
