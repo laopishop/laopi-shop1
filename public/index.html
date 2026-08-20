@@ -4,139 +4,307 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   <title>老皮小店 LAOPI SHOP | Free Fire 專業帳號交易</title>
+
+  <!-- 引入 Font Awesome 官方 Icon 圖庫 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { background-color: #0d0d0d; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; padding-bottom: 40px; }
+    body { background-color: #0d0d0d; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; padding-bottom: 50px; }
 
-    /* 頂部 Header & LOGO */
-    .header { text-align: center; padding: 25px 15px; background: linear-gradient(180deg, #1c1810 0%, #0d0d0d 100%); border-bottom: 2px solid #d4af37; }
-    .logo-img { width: 140px; height: 140px; border-radius: 50%; border: 3px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); object-fit: cover; margin-bottom: 12px; }
-    .header h1 { color: #ffd700; margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 1.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-    .header p { color: #d4af37; font-size: 14px; margin-top: 6px; font-weight: bold; }
-
-    /* 固定頂部導覽列 */
-    .nav-bar { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 12px; background: #141414; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 99; }
-    .nav-link { color: #e0e0e0; text-decoration: none; font-size: 13px; padding: 8px 12px; background: #1f1f1f; border-radius: 20px; border: 1px solid #333; font-weight: 500; }
-    .nav-link:active { background: #d4af37; color: #000; }
+    /* 頂部英雄區 Hero Section */
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 35px 20px 25px 20px;
+      background: linear-gradient(180deg, #1f1a0a 0%, #0d0d0d 100%);
+      border-bottom: 2px solid #d4af37;
+    }
+    .logo-img {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 3px solid #ffd700;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+      object-fit: cover;
+      margin-bottom: 12px;
+    }
+    .brand-title {
+      font-size: 26px;
+      font-weight: 900;
+      color: #ffd700;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+    }
+    .brand-sub {
+      font-size: 13px;
+      color: #ddd;
+      font-weight: bold;
+    }
 
     .container { max-width: 500px; margin: 0 auto; padding: 0 15px; }
 
-    /* 英雄區塊：主打按鈕 */
-    .hero-section { text-align: center; margin: 25px 0; }
-    .btn-browse-main { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; background: linear-gradient(135deg, #ff8c00, #ff4500); color: #fff; font-size: 19px; font-weight: bold; padding: 16px 0; border-radius: 30px; text-decoration: none; box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4); border: 1px solid #ff7f50; }
-    .btn-browse-main:active { transform: scale(0.98); }
+    /* 快速選單按鈕區 */
+    .quick-menu {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .quick-btn {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 20px;
+      padding: 10px 4px;
+      color: #eee;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: bold;
+      text-align: center;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    .quick-btn:active {
+      transform: scale(0.95);
+      border-color: #ffd700;
+      color: #ffd700;
+    }
+
+    /* 主要行動按鈕 - 瀏覽現貨帳號 */
+    .btn-main-action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      background: linear-gradient(135deg, #ff5500 0%, #ff2200 100%);
+      color: #fff;
+      text-decoration: none;
+      padding: 16px 0;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 18px;
+      box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4);
+      margin-bottom: 25px;
+      transition: 0.2s;
+    }
+    .btn-main-action:active { transform: scale(0.98); }
 
     /* 區塊標題 */
-    .section-title { font-size: 19px; color: #ffd700; margin: 30px 0 15px 0; padding-left: 10px; border-left: 4px solid #ffd700; font-weight: bold; display: flex; align-items: center; gap: 8px; scroll-margin-top: 100px; }
+    .section-title {
+      font-size: 18px;
+      color: #ffd700;
+      margin: 25px 0 15px 0;
+      padding-left: 10px;
+      border-left: 4px solid #ffd700;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-    /* 文字卡片區塊 */
-    .info-card { background: #161616; border: 1px solid #2a2a2a; border-radius: 12px; padding: 18px; margin-bottom: 15px; color: #ddd; line-height: 1.7; font-size: 14px; }
-    .info-card h3 { color: #ffd700; margin-top: 0; margin-bottom: 12px; font-size: 16px; border-bottom: 1px solid #2a2a2a; padding-bottom: 8px; }
-    .step-list { list-style: none; padding: 0; margin: 0; }
-    .step-item { padding: 6px 0; font-weight: 500; }
-    .step-arrow { color: #ffd700; text-align: center; font-size: 14px; margin: 2px 0; }
+    /* 官方社群與客服連結網格區 (參考圖3風格) */
+    .social-section {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 18px 12px;
+      margin-bottom: 25px;
+    }
+    .social-title-divider {
+      text-align: center;
+      color: #888;
+      font-size: 13px;
+      margin-bottom: 15px;
+      position: relative;
+    }
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .social-card {
+      background: #1d1d1d;
+      border: 1px solid #333;
+      border-radius: 14px;
+      padding: 14px 6px;
+      text-decoration: none;
+      text-align: center;
+      transition: 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .social-card:active { transform: scale(0.95); }
 
-    /* 底部社群按鈕區 */
-    .social-section { margin-top: 35px; border-top: 1px solid #222; padding-top: 20px; }
-    .social-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-    .social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 15px; color: #fff; }
-    .btn-line { background: #06c755; }
-    .btn-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-    .btn-fb { background: #1877f2; }
+    /* 各社群 Icon 與風格色彩 */
+    .icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .icon-box.line { background: #06C755; box-shadow: 0 2px 8px rgba(6, 199, 85, 0.3); }
+    .icon-box.instagram { 
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
+      box-shadow: 0 2px 8px rgba(220, 39, 67, 0.3); 
+    }
+    .icon-box.facebook { background: #1877F2; box-shadow: 0 2px 8px rgba(24, 119, 242, 0.3); }
+
+    .social-name { font-size: 13px; font-weight: bold; color: #fff; margin-bottom: 2px; }
+    .social-sub { font-size: 11px; color: #888; }
+
+    /* 內容資訊卡片 */
+    .info-card {
+      background: #161616;
+      border: 1px solid #2a2a2a;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #ddd;
+    }
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .step-item:last-child { margin-bottom: 0; }
+    .step-num {
+      background: #ffd700;
+      color: #000;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 12px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    footer {
+      text-align: center;
+      color: #666;
+      font-size: 12px;
+      margin-top: 30px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- 1. 頂部 Header & LOGO -->
-  <div class="header">
-    <img class="logo-img" src="/logo.jpg" alt="老皮小店 LOGO">
-    <h1>老皮小店 LAOPI SHOP</h1>
-    <p>🔥 Free Fire 專業帳號交易・誠信首選 🔥</p>
-  </div>
-
-  <!-- 選單捷徑導覽列 -->
-  <div class="nav-bar">
-    <a href="/products.html" target="_blank" class="nav-link">🎮 瀏覽現貨</a>
-    <a href="#sec-process" class="nav-link">🛒 購買流程</a>
-    <a href="#sec-payment" class="nav-link">💳 付款方式</a>
-    <a href="#sec-service" class="nav-link">🛡️ 售後服務</a>
-    <a href="#sec-contact" class="nav-link">💬 聯絡我們</a>
-    <a href="https://www.instagram.com/laopi_ff_shop" target="_blank" class="nav-link">📷 IG 賣場</a>
+  <!-- 頂部 Hero 品牌區 -->
+  <div class="hero">
+    <img src="/logo.jpg" alt="老皮小店 Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/140?text=LAOPI'">
+    <div class="brand-title">老皮小店 LAOPI SHOP</div>
+    <div class="brand-sub">🔥 Free Fire 專業帳號交易．誠信首選 🔥</div>
   </div>
 
   <div class="container">
-    
-    <!-- 2. 主打大按鈕 (點擊另開分頁進入帳號頁面) -->
-    <div class="hero-section">
-      <a href="/products.html" target="_blank" class="btn-browse-main">
-        🎮 瀏覽現貨帳號
-      </a>
+
+    <!-- 快速選單 -->
+    <div class="quick-menu">
+      <a href="/products.html" class="quick-btn">🎮 瀏覽現貨</a>
+      <a href="#flow" class="quick-btn">🛒 購買流程</a>
+      <a href="#payment" class="quick-btn">💳 付款方式</a>
+      <a href="#aftersales" class="quick-btn">🛡️ 售後服務</a>
+      <a href="#contact" class="quick-btn">💬 聯絡我們</a>
+      <a href="https://www.instagram.com/laopi_shop/" target="_blank" class="quick-btn">📷 IG 賣場</a>
     </div>
 
-    <!-- 3. 購買流程區塊 -->
-    <div class="section-title" id="sec-process">🛒 購買流程</div>
-    <div class="info-card">
-      <ul class="step-list">
-        <li class="step-item">① 挑選帳號</li>
-        <li class="step-arrow">↓</li>
-        <li class="step-item">② 確認價格</li>
-        <li class="step-arrow">↓</li>
-        <li class="step-item">③ 完成付款</li>
-        <li class="step-arrow">↓</li>
-        <li class="step-item">④ 交付帳號</li>
-        <li class="step-arrow">↓</li>
-        <li class="step-item">⑤ 交易完成 ✨</li>
-      </ul>
-    </div>
+    <!-- 主行動按鈕：瀏覽現貨帳號 -->
+    <a href="/products.html" class="btn-main-action">
+      🎮 瀏覽現貨帳號
+    </a>
 
-    <!-- 4. 付款方式區塊 -->
-    <div class="section-title" id="sec-payment">💳 付款方式</div>
-    <div class="info-card">
-      <h3>💳 老皮小店｜付款方式</h3>
-      <ul class="step-list">
-        <li class="step-item">① 網銀轉帳</li>
-        <li class="step-item">② 無卡存款</li>
-        <li class="step-item">③ 超商代碼繳費</li>
-        <li class="step-item">④ 8591 交易</li>
-      </ul>
-    </div>
-
-    <!-- 5. 售後服務區塊 -->
-    <div class="section-title" id="sec-service">🛡️ 售後服務</div>
-    <div class="info-card">
-      <h3>🛡️ 老皮小店｜售後服務</h3>
-      <ul class="step-list">
-        <li class="step-item">① 15天售後保障</li>
-        <li class="step-item">② 帳號問題協助</li>
-        <li class="step-item">③ 專人客服處理</li>
-        <li class="step-item">④ 交易紀錄保留</li>
-      </ul>
-    </div>
-
-    <!-- 6. 聯絡客服區塊 -->
-    <div class="section-title" id="sec-contact">💬 聯絡客服</div>
-    <div class="info-card">
-      <h3>💬 老皮小店｜聯絡客服</h3>
-      <p style="margin: 5px 0;">🕒 客服時間｜10:00～24:00</p>
-      <p style="margin: 5px 0; color: #ffd700;">✨ 我們會盡快為您服務！</p>
-    </div>
-
-    <!-- 7. 最下方官方社群連結 -->
-    <div class="social-section">
-      <div style="text-align: center; color: #aaa; font-size: 13px;">—— 官方社群與客服連結 ——</div>
+    <!-- 官方社群與客服連結 (依需求移動至此) -->
+    <div class="social-section" id="contact">
+      <div class="social-title-divider">— 官方社群與客服連結 —</div>
       <div class="social-grid">
-        <a href="https://line.me/R/ti/p/@739njwrp" target="_blank" class="social-btn btn-line">
-          💬 官方 LINE 客服 (@739njwrp)
+        
+        <!-- LINE 官方客服 -->
+        <a href="https://line.me/R/ti/p/@739njwrp" target="_blank" class="social-card">
+          <div class="icon-box line">
+            <i class="fa-brands fa-line"></i>
+          </div>
+          <div class="social-name">官方 LINE</div>
+          <div class="social-sub">@739njwrp</div>
         </a>
-        <a href="https://www.instagram.com/laopi_ff_shop?igsh=am45cXl3eWFweXNy&igsi=am45cXl3eWFweXNy&utm_source=qr" target="_blank" class="social-btn btn-ig">
-          📷 Instagram 官方賣場
+
+        <!-- Instagram 官方賣場 -->
+        <a href="https://www.instagram.com/laopi_shop/" target="_blank" class="social-card">
+          <div class="icon-box instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </div>
+          <div class="social-name">Instagram</div>
+          <div class="social-sub">官方賣場</div>
         </a>
-        <a href="https://www.facebook.com/share/1LZytU4DQ4/?mibextid=wwXIfr" target="_blank" class="social-btn btn-fb">
-          👍 Facebook 粉絲專頁
+
+        <!-- Facebook 粉絲專頁 -->
+        <a href="https://www.facebook.com/" target="_blank" class="social-card">
+          <div class="icon-box facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </div>
+          <div class="social-name">Facebook</div>
+          <div class="social-sub">粉絲專頁</div>
         </a>
+
       </div>
     </div>
+
+    <!-- 🛒 購買流程 -->
+    <div class="section-title" id="flow">🛒 購買流程</div>
+    <div class="info-card">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div>於現貨列表挑選喜歡的帳號或截圖詢問。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div>聯繫官方 LINE 客服確認帳號價格與細節。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div>選擇合適的付款方式完成款項支付。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div>專人迅速移交帳號資料並指導綁定。</div>
+      </div>
+    </div>
+
+    <!-- 💳 付款方式 -->
+    <div class="section-title" id="payment">💳 付款方式</div>
+    <div class="info-card">
+      • 銀行轉帳 / 無卡存款<br>
+      • 超商代碼繳費 (7-11 / 全家)<br>
+      • 中國信託 / LINE Pay
+    </div>
+
+    <!-- 🛡️ 售後服務與保障 -->
+    <div class="section-title" id="aftersales">🛡️ 售後服務與保障</div>
+    <div class="info-card">
+      • 交易全程專人指導改綁，確保買家帳號安全。<br>
+      • 來源正當透明，交易誠信安全首選。
+    </div>
+
+    <footer>
+      © 2026 老皮小店 LAOPI SHOP. All Rights Reserved.
+    </footer>
 
   </div>
 
