@@ -224,7 +224,7 @@
   <script>
     // 1. 初始化 Supabase
     const SUPABASE_URL = 'https://kjvzobgeqajfdoodnlac.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqdnpvYmdlcWFqZmRvb2RubGFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcyOTE4NzEsImV4cCI6MjEwMjg2Nzg3MX0.hzm2DiQTjeSliAsQZXCfSF1DdDNIIO2rvD2vJX-Geg4'; // 已填入正確的金鑰
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqdnpvYmdlcWFqZmRvb2RubGFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcyOTE4NzEsImV4cCI6MjEwMjg2Nzg3MX0.hzm2DiQTjeSliAsQZXCfSF1DdDNIIO2rvD2vJX-Geg4'; 
 
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -246,14 +246,14 @@
 
         if (error) throw error;
 
-        // 轉換欄位名稱以相容前端邏輯
+        // 轉換欄位名稱（包含 title / name, is_active / isactive / isActive 相容處理）
         productsList = (data || []).map(p => ({
           id: p.id,
-          name: p.name,
+          name: p.title || p.name || '無標題商品',
           price: p.price,
           description: p.description,
-          imageUrl: p.image_url,
-          isActive: p.is_active
+          imageUrl: p.imageUrl || p.image_url,
+          isActive: p.isActive !== undefined ? p.isActive : (p.isactive !== undefined ? p.isactive : p.is_active)
         }));
 
         renderProducts();
@@ -265,7 +265,7 @@
     }
 
     function renderProducts() {
-      const activeProducts = productsList.filter(p => p.isActive);
+      const activeProducts = productsList.filter(p => p.isActive === true || p.isActive === undefined);
       const grid = document.getElementById('productGrid');
 
       if (activeProducts.length === 0) {
@@ -275,7 +275,7 @@
 
       grid.innerHTML = activeProducts.map(p => {
         const imgs = (p.imageUrl || '').split(',').filter(Boolean);
-        const coverImg = imgs.length > 0 ? imgs[0] : 'https://via.placeholder.com/200x140?text=無圖片';
+        const coverImg = imgs.length > 0 ? imgs[0].trim() : 'https://via.placeholder.com/200x140?text=無圖片';
 
         return `
           <div class="product-card" onclick="openModal(${p.id})">
@@ -295,7 +295,7 @@
       if (!p) return;
 
       currentActiveProductId = id;
-      currentImages = (p.imageUrl || '').split(',').filter(Boolean);
+      currentImages = (p.imageUrl || '').split(',').map(s => s.trim()).filter(Boolean);
       if (currentImages.length === 0) currentImages = ['https://via.placeholder.com/400x250?text=無圖片'];
       currentImageIndex = 0;
 
