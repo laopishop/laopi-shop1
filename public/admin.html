@@ -117,7 +117,7 @@
     function renderList() {
       document.getElementById('list').innerHTML = allProducts.map(p => `
         <tr>
-          <td><b>${escapeHtml(p.name || p.title)}</b></td>
+          <td><b>${escapeHtml(p.title)}</b></td>
           <td>$${p.price}</td>
           <td><span style="color:${p.isActive ? '#28a745' : '#dc3545'}; font-weight:bold;">${p.isActive ? '上架' : '下架'}</span></td>
           <td>
@@ -136,7 +136,7 @@
       if (!p) return;
 
       document.getElementById('editProductId').value = p.id;
-      document.getElementById('name').value = p.name || p.title || '';
+      document.getElementById('name').value =p.title || '';
       document.getElementById('price').value = p.price;
       document.getElementById('category').value = p.category || '';
       document.getElementById('imageUrl').value = p.imageUrl || '';
