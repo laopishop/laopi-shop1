@@ -198,17 +198,6 @@
       margin-top: 2px;
     }
 
-    /* 公告與商品樣式 */
-    .product-card {
-      background: #1d1d1d;
-      border: 1px solid #ffd700;
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 20px;
-    }
-    .product-card h3 { margin: 0 0 8px 0; color: #ffd700; }
-    .product-card p { margin: 4px 0; color: #ccc; }
-
     footer {
       text-align: center;
       color: #666;
@@ -243,9 +232,6 @@
       🎮 瀏覽現貨帳號
     </a>
 
-    <!-- 動態載入公告與商品的區塊 -->
-    <div id="product-list"></div>
-
     <!-- 官方社群與客服連結 -->
     <div class="social-section" id="contact">
       <div class="social-title-divider">— 官方社群與客服連結 —</div>
@@ -260,7 +246,7 @@
           <div class="social-sub">@739njwrp</div>
         </a>
 
-        <!-- Instagram 官方賣場 -->
+        <!-- Instagram 官方賣場 (更新精準連結) -->
         <a href="https://www.instagram.com/laopi_ff_shop?igsh=am45cXl3eWFweXNy&amp;igsi=am45cXl3eWFweXNy&amp;utm_source=qr" target="_blank" class="social-card">
           <div class="icon-box instagram">
             <i class="fa-brands fa-instagram"></i>
@@ -330,45 +316,5 @@
 
   </div>
 
-<!-- 引入 Supabase SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-  // 初始化 Supabase
-  const SUPABASE_URL = 'https://kjvzobgeqajfdoodnlac.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_H3C8mO_4PQxG5fb9jPJUSw_1CJKexJI';
-  const { createClient } = window.supabase;
-  const _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  // 讀取資料庫中的商品與公告
-  async function loadProducts() {
-    const { data: products, error } = await _supabase
-      .from('products')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      console.error('讀取失敗:', error);
-      return;
-    }
-
-    const container = document.getElementById('product-list');
-    if (!container) return;
-    
-    container.innerHTML = '';
-
-    products.forEach(item => {
-      container.innerHTML += `
-        <div class="product-card">
-          <h3>${item.title}</h3>
-          <p>價格：NT$ ${item.price}</p>
-          <p>${item.description || ''}</p>
-        </div>
-      `;
-    });
-  }
-
-  loadProducts();
-</script>
 </body>
 </html>

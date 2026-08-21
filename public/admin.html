@@ -76,56 +76,19 @@
     </div>
   </div>
 
-  <!-- 引入 Supabase SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <script>
-    // 初始化 Supabase
-    const SUPABASE_URL = 'https://kjvzobgeqajfdoodnlac.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_H3C8mO_4PQxG5fb9jPJUSw_1CJKexJI';
-    const { createClient } = window.supabase;
-    const _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
     let allProducts = [];
 
     async function check() {
-      // 驗證登入狀態 (若你的系統依然使用伺服器 Session，可以保留原判斷，否則直接讀取資料)
-      try {
-        const res = await fetch('/api/admin/check-auth');
-        const data = await res.json();
-        if (!data.authenticated) {
-          window.location.href = '/admin-login.html';
-          return;
-        }
-      } catch (e) {
-        // 若 API 停用則順暢進行
-      }
-      load();
+      const res = await fetch('/api/admin/check-auth');
+      const data = await res.json();
+      if (!data.authenticated) window.location.href = '/admin-login.html';
+      else load();
     }
 
-    // 從 Supabase 載入所有商品資料
     async function load() {
-      const { data, error } = await _supabase
-        .from('products')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        console.error('讀取商品失敗:', error);
-        return;
-      }
-
-      // 資料欄位名稱相容映射
-      allProducts = data.map(p => ({
-        id: p.id,
-        name: p.title || p.name || '',
-        price: p.price || 0,
-        category: p.category || '',
-        imageUrl: p.imageUrl || p.image_url || '',
-        description: p.description || '',
-        isActive: p.isActive !== undefined ? p.isActive : (p.is_active !== undefined ? p.is_active : true)
-      }));
-
+      const res = await fetch('/api/products');
+      allProducts = await res.json();
       renderList();
     }
 
@@ -137,7 +100,7 @@
           <td><span style="color:${p.isActive ? '#28a745' : '#dc3545'}; font-weight:bold;">${p.isActive ? '上架' : '下架'}</span></td>
           <td>
             <div class="action-btns">
-              <button class="btn-toggle" onclick="toggle(${p.id}, ${p.isActive})">${p.isActive ? '下架' : '上架'}</button>
+              <button class="btn-toggle" onclick="toggle(${p.id})">${p.isActive ? '下架' : '上架'}</button>
               <button class="btn-edit" onclick="startEdit(${p.id})">編輯</button>
               <button class="btn-del" onclick="del(${p.id})">刪除</button>
             </div>
@@ -179,40 +142,32 @@
       document.getElementById('cancelBtn').style.display = 'none';
     }
 
-    // 表單送出 (判斷是新增還是編輯並寫入 Supabase)
+    // 表單送出 (判斷是新增還是編輯)
     document.getElementById('productForm').onsubmit = async (e) => {
       e.preventDefault();
       const editId = document.getElementById('editProductId').value;
       const payload = {
-        title: document.getElementById('name').value,
         name: document.getElementById('name').value,
-        price: parseInt(document.getElementById('price').value) || 0,
+        price: document.getElementById('price').value,
+        category: document.getElementById('category').value,
         imageUrl: document.getElementById('imageUrl').value,
         description: document.getElementById('description').value
       };
 
       if (editId) {
-        // 修改商品
-        const { error } = await _supabase
-          .from('products')
-          .update(payload)
-          .eq('id', editId);
-
-        if (error) {
-          alert('修改失敗：' + error.message);
-          return;
-        }
+        // PUT 修改
+        await fetch(`/api/products/${editId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
       } else {
-        // 新增商品
-        payload.isActive = true;
-        const { error } = await _supabase
-          .from('products')
-          .insert([payload]);
-
-        if (error) {
-          alert('新增失敗：' + error.message);
-          return;
-        }
+        // POST 新增
+        await fetch('/api/products', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
       }
 
       resetForm();
@@ -220,39 +175,21 @@
     };
 
     // 切換上下架
-    async function toggle(id, currentStatus) {
-      const { error } = await _supabase
-        .from('products')
-        .update({ isActive: !currentStatus })
-        .eq('id', id);
-
-      if (error) {
-        alert('切換狀態失敗：' + error.message);
-      } else {
-        load();
-      }
+    async function toggle(id) {
+      await fetch(`/api/products/${id}/toggle`, { method: 'PATCH' });
+      load();
     }
 
     // 刪除商品
     async function del(id) {
       if (confirm('確定要刪除這項商品嗎？')) {
-        const { error } = await _supabase
-          .from('products')
-          .delete()
-          .eq('id', id);
-
-        if (error) {
-          alert('刪除失敗：' + error.message);
-        } else {
-          load();
-        }
+        await fetch(`/api/products/${id}`, { method: 'DELETE' });
+        load();
       }
     }
 
     async function logout() {
-      try {
-        await fetch('/api/admin/logout', { method: 'POST' });
-      } catch(e) {}
+      await fetch('/api/admin/logout', { method: 'POST' });
       window.location.href = '/admin-login.html';
     }
 
