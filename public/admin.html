@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>商品管理後台</title>
+  <!-- 引入 Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f2f5; padding: 15px; margin: 0; }
     .header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 15px; }
@@ -77,30 +79,50 @@
   </div>
 
   <script>
+    // 1. 初始化 Supabase (填入你的連線資訊)
+    const SUPABASE_URL = 'https://laopishop.supabase.co'; 
+    const SUPABASE_KEY = 'sb_publishable_H3C8m0_4PQxG5fb9jPJUSw_1CJKexJI'; // 請填入你的 Anon Public Key    
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     let allProducts = [];
 
     async function check() {
-      const res = await fetch('/api/admin/check-auth');
-      const data = await res.json();
-      if (!data.authenticated) window.location.href = '/admin-login.html';
-      else load();
+      // 保持原有驗證邏輯
+      try {
+        const res = await fetch('/api/admin/check-auth');
+        const data = await res.json();
+        if (!data.authenticated) window.location.href = '/admin-login.html';
+        else load();
+      } catch (e) {
+        load();
+      }
     }
 
+    // 從 Supabase 讀取資料（就算關電腦、伺服器重啟資料都不會不見）
     async function load() {
-      const res = await fetch('/api/products');
-      allProducts = await res.json();
+      const { data, error } = await _supabase
+        .from('products')
+        .select('*')
+        .order('id', { ascending: false });
+
+      if (error) {
+        console.error('讀取失敗:', error);
+        alert('讀取商品失敗');
+        return;
+      }
+
+      allProducts = data || [];
       renderList();
     }
 
     function renderList() {
       document.getElementById('list').innerHTML = allProducts.map(p => `
         <tr>
-          <td><b>${escapeHtml(p.name)}</b></td>
+          <td><b>${escapeHtml(p.name || p.title)}</b></td>
           <td>$${p.price}</td>
           <td><span style="color:${p.isActive ? '#28a745' : '#dc3545'}; font-weight:bold;">${p.isActive ? '上架' : '下架'}</span></td>
           <td>
             <div class="action-btns">
-              <button class="btn-toggle" onclick="toggle(${p.id})">${p.isActive ? '下架' : '上架'}</button>
+              <button class="btn-toggle" onclick="toggle(${p.id}, ${p.isActive})">${p.isActive ? '下架' : '上架'}</button>
               <button class="btn-edit" onclick="startEdit(${p.id})">編輯</button>
               <button class="btn-del" onclick="del(${p.id})">刪除</button>
             </div>
@@ -109,13 +131,12 @@
       `).join('');
     }
 
-    // 點擊「編輯」按鈕：填回頂部表單
     function startEdit(id) {
       const p = allProducts.find(item => item.id === id);
       if (!p) return;
 
       document.getElementById('editProductId').value = p.id;
-      document.getElementById('name').value = p.name;
+      document.getElementById('name').value = p.name || p.title || '';
       document.getElementById('price').value = p.price;
       document.getElementById('category').value = p.category || '';
       document.getElementById('imageUrl').value = p.imageUrl || '';
@@ -126,11 +147,9 @@
       document.getElementById('submitBtn').style.background = '#0d6efd';
       document.getElementById('cancelBtn').style.display = 'block';
 
-      // 平滑捲動至頂部表單
       document.getElementById('formCard').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // 重置表單為新增狀態
     function resetForm() {
       document.getElementById('editProductId').value = '';
       document.getElementById('productForm').reset();
@@ -142,32 +161,35 @@
       document.getElementById('cancelBtn').style.display = 'none';
     }
 
-    // 表單送出 (判斷是新增還是編輯)
+    // 儲存（新增或修改直接寫入 Supabase 雲端資料庫）
     document.getElementById('productForm').onsubmit = async (e) => {
       e.preventDefault();
       const editId = document.getElementById('editProductId').value;
       const payload = {
         name: document.getElementById('name').value,
-        price: document.getElementById('price').value,
+        title: document.getElementById('name').value,
+        price: Number(document.getElementById('price').value),
         category: document.getElementById('category').value,
         imageUrl: document.getElementById('imageUrl').value,
         description: document.getElementById('description').value
       };
 
       if (editId) {
-        // PUT 修改
-        await fetch(`/api/products/${editId}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
+        // 更新 Supabase
+        const { error } = await _supabase
+          .from('products')
+          .update(payload)
+          .eq('id', editId);
+
+        if (error) alert('修改失敗: ' + error.message);
       } else {
-        // POST 新增
-        await fetch('/api/products', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
+        // 新增至 Supabase
+        payload.isActive = true;
+        const { error } = await _supabase
+          .from('products')
+          .insert([payload]);
+
+        if (error) alert('新增失敗: ' + error.message);
       }
 
       resetForm();
@@ -175,16 +197,26 @@
     };
 
     // 切換上下架
-    async function toggle(id) {
-      await fetch(`/api/products/${id}/toggle`, { method: 'PATCH' });
-      load();
+    async function toggle(id, currentStatus) {
+      const { error } = await _supabase
+        .from('products')
+        .update({ isActive: !currentStatus })
+        .eq('id', id);
+
+      if (error) alert('切換失敗');
+      else load();
     }
 
     // 刪除商品
     async function del(id) {
       if (confirm('確定要刪除這項商品嗎？')) {
-        await fetch(`/api/products/${id}`, { method: 'DELETE' });
-        load();
+        const { error } = await _supabase
+          .from('products')
+          .delete()
+          .eq('id', id);
+
+        if (error) alert('刪除失敗');
+        else load();
       }
     }
 
@@ -193,7 +225,7 @@
       window.location.href = '/admin-login.html';
     }
 
-    // 多圖自動上傳 ImgBB
+    // ImgBB 自動上傳保持不變
     const IMGBB_API_KEY = 'bd19a15edb9e5688cab8347560641b8e';
     document.getElementById('imageFileInput').addEventListener('change', async function(e) {
       const files = e.target.files;

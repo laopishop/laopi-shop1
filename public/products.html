@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   <title>現貨帳號列表 | 老皮小店 LAOPI SHOP</title>
+  <!-- 引入 Supabase JS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { box-sizing: border-box; }
     body { background-color: #0d0d0d; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; padding-bottom: 40px; }
@@ -220,6 +222,12 @@
   <div id="toast" class="toast">已複製商品專屬連結！</div>
 
   <script>
+    // 1. 初始化 Supabase
+    const SUPABASE_URL = 'https://laopishop.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_H3C8m0_4PQxG5fb9jPJUSw_1CJKexJI'; // 已填入正確的金鑰
+
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     let productsList = [];
     let currentImages = [];
     let currentImageIndex = 0;
@@ -228,13 +236,30 @@
     let touchStartX = 0;
     let touchEndX = 0;
 
+    // 從 Supabase 載入商品
     async function loadProducts() {
       try {
-        const res = await fetch('/api/products');
-        productsList = await res.json();
+        const { data, error } = await _supabase
+          .from('products')
+          .select('*')
+          .order('id', { ascending: false });
+
+        if (error) throw error;
+
+        // 轉換欄位名稱以相容前端邏輯
+        productsList = (data || []).map(p => ({
+          id: p.id,
+          name: p.name,
+          price: p.price,
+          description: p.description,
+          imageUrl: p.image_url,
+          isActive: p.is_active
+        }));
+
         renderProducts();
         checkUrlParam();
       } catch (err) {
+        console.error('載入商品錯誤：', err);
         document.getElementById('productGrid').innerHTML = '<div style="grid-column:1/-1; text-align:center; color:#888;">載入商品失敗，請稍後重試</div>';
       }
     }
